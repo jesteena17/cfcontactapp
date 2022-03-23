@@ -1,12 +1,17 @@
-.form-style input {
+body {
+     background-color: #d8e5f1;
+}
+.form-style input[type="text"],
+.form-style input[type="password"],
+.form-style input[type="email"] {
      border: 0;
-     height: 50px;
+
      border-radius: 0;
      border-bottom: 1px solid #ebebeb;
      width: auto;
 }
 .form-style input:focus {
-     border-bottom: 1px solid #007bff;
+     border-bottom: 1px solid #337ab7;
      box-shadow: none;
      outline: 0;
      background-color: #ebebeb;
@@ -21,6 +26,18 @@
 }
 button {
      height: 50px;
+     outline: none !important;
+}
+#regbtn {
+     height: 50px !important;
+     outline: none !important;
+}
+.form-group {
+     margin-bottom: 0.5rem !important;
+}
+.pb-3,
+.py-3 {
+     padding-bottom: 0.7rem !important;
 }
 .sideline:before,
 .sideline:after {
@@ -34,14 +51,13 @@ button {
      margin: 0 0 0 20px;
 }
 .bg1 {
-     background-color: #537895;
-     background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
+     background: #1276b6;
      text-align: center;
 }
-.bg1 > i {
+.bg1 > img {
      position: relative;
      top: calc(50% - 10px);
-     font-size: 50px;
+     vertical-align: middle;
 }
 .logindiv {
      border-radius: 10px !important;
@@ -63,4 +79,25 @@ button {
 }
 .cls-3 {
      fill: red;
+}
+.navbar {
+     background-color: #337ab7 !important;
+}
+#signupForm label.error {
+     margin-left: 30px;
+     width: auto;
+     display: inline;
+     color: red;
+     font-size: 10pt;
+}
+#signinForm label.error {
+     margin-left: 30px;
+     width: auto;
+     display: inline;
+     color: red;
+     font-size: 10pt;
+}
+.sserrors {
+     color: red;
+     font-size: small;
 }
