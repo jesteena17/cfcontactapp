@@ -101,3 +101,9 @@ button {
      color: red;
      font-size: small;
 }
+.svg1 {
+     fill: red !important;
+}
+.svg2 {
+     fill: green !important;
+}
