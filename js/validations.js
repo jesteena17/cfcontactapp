@@ -77,4 +77,33 @@ $().ready(function() {
           }
      });
 
+
+     
+     $("#addcontactform").validate({
+          rules: {
+               firstname: "required",
+               lastname: "required",
+               title: "required",
+               gender: "required",
+               dob: "required",
+               email: "required",
+               phone: "required",
+               address: "required",
+               street: "required",
+               pincode:"required"
+          },
+          messages: {
+               firstname: "Firstname Required *",
+               lastname: "Lastname Required *",
+               title: "Title Required *",
+               gender: "Select Gender *",
+               dob: "DOB Required *",
+               email: "Email Required *",
+               phone: "Phone Required *",
+               address: "Address Required *",
+               street: "Street Required *",
+               pincode: "Pincode Required *"
+          },
+          
+     });
 });

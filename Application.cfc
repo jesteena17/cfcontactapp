@@ -7,5 +7,13 @@
 <cfset this.setClientCookies = true /> 
 <cfset this.datasource="mysqldsn" />
 <cfset This.scriptProtect="all"/>
-
+<cffunction name="onApplicationStart" returntype="boolean" >
+	<cfreturn true />
+</cffunction>
+<cffunction name="onRequestStart" returntype="boolean" >
+	<cfreturn true />
+</cffunction>
+<cffunction name="onSessionStart" returnType="void" output="false">
+  <cfset session.stLoggedInUser.loggedin = false>
+</cffunction>
 </cfcomponent>
