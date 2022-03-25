@@ -412,3 +412,16 @@ var WinPrint = window.open('', '', 'width=900,height=650');
 </body>
 
 </html>
+
+
+<cfset getcontacts = ORMExecuteQuery("from contacts where userid="&usersid)> 
+
+download pdf
+
+https://community.adobe.com/t5/coldfusion-discussions/create-pdf-and-force-download-it/m-p/2367581
+
+
+
+
+
+               

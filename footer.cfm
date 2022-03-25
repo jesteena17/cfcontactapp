@@ -1,2 +1,1 @@
-</body>
-</html>
+<cfpdf action="removeWatermark" source="Contacts.pdf" destination="noWatermark.pdf">

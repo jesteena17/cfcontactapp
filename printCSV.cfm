@@ -1,16 +1,19 @@
  <cfoutput>
- <cfinvoke component="components.backend" method="displayalldata" returnvariable="allcontacts"></cfinvoke>
+ <cfinvoke component="components.backend" method="displayalldataforreport" returnvariable="allcontacts"></cfinvoke>
  
  <cfset thisPath = ExpandPath("*.*")>
    <cfset f_dir = GetDirectoryFromPath(thisPath)>
 
    <cfset f_name = "file.csv">
    <cffile action="WRITE" file="#f_dir##f_name#"
-   output="Fullname, Email ID,  Phone" addnewline="Yes">
+   output="ID,Fullname,Gender,DOB,Username,Email ID,Phone,Address,photo,Date Created,Added by" addnewline="Yes">
  
    <cfloop query="allcontacts">
    <cffile action="APPEND" file="#f_dir##f_name#"
-   output="#REPLACE(Fullname, ",", "","AlL")#,#title&'.'&firstname&' '&lastname # , #email#, #mobile#"
+   output="#REPLACE(id, ",", "","AlL")#,#cid#,#title&'.'&firstname&' '&lastname# ,
+   #gender#,#birthday#,#username#,#email#, #mobile#,#address&','&street&', '&pincode#,
+    '/Applications/ColdFusion2021/cfusion/wwwroot/cfcontactapp/contactimgs/'&#photo#,#added_at#,
+    #fullname#"
    addnewline="Yes">
    </cfloop>
 </cfoutput>

@@ -6,6 +6,8 @@
 <cfset this.clientManagement = true>
 <cfset this.setClientCookies = true /> 
 <cfset this.datasource="mysqldsn" />
+<cfset this.ormenabled = "true"> 
+<cfset this.ormsettings = {datasource="mysqldsn", logsql="true"}> 
 <cfset This.scriptProtect="all"/>
 <cffunction name="onApplicationStart" returntype="boolean" >
 	<cfreturn true />

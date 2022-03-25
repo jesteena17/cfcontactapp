@@ -150,11 +150,17 @@
           <cfset variables.getNumberOfRecords = listLen(myaddResult.generated_key)>
           <cfreturn variables.getNumberOfRecords>
      </cffunction> 
-    <cffunction name="displayalldata" access="public" returnType="query" output="false">      
-          <cfquery name = "local.getcontacts"    >
-               select * from contacts order by added_at desc;
+    <cffunction name="displayalldata" access="public" returnType="any" output="true">  
+          <cfargument name="usersid" required="true">    
+          <cfset variables.getcontacts = EntityLoad('Contacts',{},'added_at desc')>
+          <cfreturn variables.getcontacts>    
+     </cffunction>
+     <cffunction name="displayalldataforreport" access="public" returnType="query" output="false">      
+          <cfquery name = "local.getallcontacts" >
+               select c.*,r.fullname  from contacts c join register r on
+               (r.regid=c.userid) order by c.added_at desc;
           </cfquery>
-          <cfreturn getcontacts>    
+          <cfreturn getallcontacts>    
      </cffunction>
      <cffunction name="deletecontact" access="public" returnType="string"  output="false">
           <cfargument name="cid" required="true">
