@@ -3,5 +3,5 @@
      <cfinvokeargument name="cid" value=#Decrypt(URL.die, key)#/>  
 </cfinvoke>
 <cfif result GT 0>  
-    <cflocation url="home.cfm">
+    <cflocation url="home.cfm" addtoken="no">
 </cfif>
