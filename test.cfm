@@ -277,3 +277,138 @@
 </cfdocument>
 <cfheader name="Content-Disposition" value="attachment;filename=contacts.pdf">
 <cfcontent type="application/octet-stream" file="#expandPath('.')#\contacts.pdf" deletefile="Yes">
+
+
+
+
+
+
+        function PrintDocument() {
+            //Hide print button
+               var printContent = document.getElementById("employee");
+            //Hide second child i.e second column Header
+            $("#employee th:nth-child(2)").hide()
+
+            //Hide second child i.e second column
+            $("#employee td:nth-child(2)").hide()
+var WinPrint = window.open('', '', 'width=900,height=650');
+
+          
+
+            //Or hide column using single line
+            //$(".employee th:nth-child(2), .employee td:nth-child(2)").hide();
+
+            // Open Print  Preview mode to print
+          WinPrint.document.write(printContent.innerHTML);
+    WinPrint.document.close();
+    WinPrint.focus();
+    WinPrint.print();
+    WinPrint.close();
+            //window.print();
+
+            //show print button again
+           
+
+            //Or show hidden columns again
+            $("#employee th:nth-child(2)").show();
+            $("#employee td:nth-child(2)").show();
+
+            //Or show hidden column using single line
+            //$(".employee th:nth-child(2), .employee td:nth-child(2)").show();
+        }   
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+ <a href="javascript:void(0);" onclick="PrintDocument()">Print</a>
+
+
+ https://www.webcodeexpert.com/2020/04/jquery-to-hide-first-last-or-nth-column.html
+
+ https://code-boxx.com/print-page-javascript/
+
+
+
+
+ <html>
+<head>
+    <title></title>
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <table id="employee">
+        <tr>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+        </tr>
+        <tr>
+            <td>Jatin</td>
+            <td>Kumar</td>
+            <td>Verma</td>
+            <td>23</td>
+        </tr>
+        <tr>
+            <td>Sandeep</td>
+            <td>Singh</td>
+            <td>Dangi</td>
+            <td>33</td>
+        </tr>
+        <tr>
+            <td>Aman</td>
+            <td>Pal</td>
+            <td>Singh</td>
+            <td>27</td>
+        </tr>
+    </table>
+    <br />
+     <a href="javascript:void(0);" onclick="PrintDocument()">Print</a>
+  
+  <script>
+    function PrintDocument() {
+       $("#employee th:nth-child(2)").hide();
+
+            //Hide second child i.e second column
+            $("#employee td:nth-child(2)").hide();
+            //Hide print button
+               var divToPrint  = document.getElementById("employee");
+      
+      newWin = window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close()
+      
+            //Hide second child i.e second column Header
+           
+//var WinPrint = window.open('', '', 'width=900,height=650');
+
+          
+
+            //Or hide column using single line
+            //$(".employee th:nth-child(2), .employee td:nth-child(2)").hide();
+
+            // Open Print  Preview mode to print
+         // WinPrint.document.write(printContent.innerHTML);
+    // WinPrint.document.close();
+    // WinPrint.focus();
+    // WinPrint.print();
+    // WinPrint.close();
+            //window.print();
+
+            //show print button again
+           
+
+            //Or show hidden columns again
+            $("#employee th:nth-child(2)").show();
+            $("#employee td:nth-child(2)").show();
+
+            //Or show hidden column using single line
+            //$(".employee th:nth-child(2), .employee td:nth-child(2)").show();
+        }   
+
+  </script>
+  
+</body>
+
+</html>
