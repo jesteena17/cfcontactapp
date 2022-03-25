@@ -107,3 +107,96 @@ $().ready(function() {
           
      });
 });
+
+
+$(document).on('click', '.editbtn', function() {
+     var _contactid = $(this).data('conid');
+     $.ajax({
+        type: "post", 
+        url: 'components/backend.cfc?method=displaydata', 
+        data: {editid:_contactid}, 
+        beforeSend: function () {
+            $("#subcontact").attr("disabled", true);
+        },
+        success: function (response) {
+           p=JSON.parse(response);
+          $("#updatedata").val(p.DATA[0][0]);
+          $("#title").val(p.DATA[0][1]);
+          $("#firstname").val(p.DATA[0][2]);
+          $("#lastname").val(p.DATA[0][3]);
+          $("#gender").val(p.DATA[0][4]);
+          let dateStr =new Date(p.DATA[0][5]);
+          var now = new Date(p.DATA[0][5]);
+          var day = ("0" + now.getDate()).slice(-2);
+          var month = ("0" + (now.getMonth() + 1)).slice(-2);
+          var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+          $('#dob').val(today);
+          $("#email").val(p.DATA[0][6]);
+          $("#phone").val(p.DATA[0][7]);
+          $("#address").val(p.DATA[0][8]);
+          $("#street").val(p.DATA[0][9]);
+          $("#oldphoto").val(p.DATA[0][10]);
+          $("#pincode").val(p.DATA[0][11]);
+          var newSrc = "./contactimgs/"+p.DATA[0][10];
+          $("#theimage").attr('src', newSrc);
+          $("#subcontact").removeAttr("disabled");
+        }
+    });
+});
+
+   $(document).on('click', '.viewbtn', function() {
+
+     var _contactid = $(this).data('conid');
+     
+     $.ajax({
+        type: "post", 
+        url: 'components/backend.cfc?method=displaydata', 
+        data: {editid:_contactid}, 
+       
+        success: function (response) {
+           p=JSON.parse(response);
+          $("#coid").text(p.DATA[0][0]);
+          $("#cname").text(p.DATA[0][1]+' '+p.DATA[0][2]+' '+p.DATA[0][3]);
+         
+          $("#cgen").text(p.DATA[0][4]);
+          let dateStr =new Date(p.DATA[0][5]);
+          var now = new Date(p.DATA[0][5]);
+          var day = ("0" + now.getDate()).slice(-2);
+          var month = ("0" + (now.getMonth() + 1)).slice(-2);
+          var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+          $('#cbday').text(today);
+          $("#cem").text(p.DATA[0][6]);
+          $("#cph").text(p.DATA[0][7]);
+          $("#cadd").text(p.DATA[0][8]+"<br>"+p.DATA[0][9]);
+
+          $("#cpin").text(p.DATA[0][11]);
+          var newSrc = "./contactimgs/"+p.DATA[0][10];
+          $("#theimageview").attr('src', newSrc);
+          
+        }
+    });
+});
+
+
+function PrintDocument() {
+     $("#employee th:nth-child(5)").hide();
+
+          $("#employee td:nth-child(5)").hide();
+            $("#employee td:nth-child(6)").hide();
+              $("#employee td:nth-child(7)").hide();
+   
+             var divToPrint  = document.getElementById("employee");
+    
+    newWin = window.open("");
+      newWin.document.write(divToPrint.outerHTML);
+      newWin.print();
+      newWin.close()
+    
+          //Or show hidden columns again
+          $("#employee th:nth-child(5)").show();
+         $("#employee td:nth-child(5)").show();
+ $("#employee td:nth-child(6)").show();
+    $("#employee td:nth-child(7)").show();
+
+         
+      }   

@@ -61,7 +61,6 @@
                                                                  <td>#allcontacts.email#</td>
                                                                  <td>#allcontacts.mobile#</td>
                                                                   <td>
-                                                                     
                                                                       <a class="btn btn btn-outline-primary btn-sm rounded-pill px-3 editbtn" data-conid="#allcontacts.cid#" id="editbtn"  data-toggle="modal" data-target="##exampleModal">
                                                                            Edit
                                                                       </a>
@@ -275,9 +274,7 @@
                     </div>
                </div>  
           </cfoutput>
-
 <script>
-  
   FiletoUpload.onchange = evt => {
   const [file] = FiletoUpload.files
   if (file) {

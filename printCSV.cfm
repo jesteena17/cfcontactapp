@@ -6,11 +6,11 @@
 
    <cfset f_name = "file.csv">
    <cffile action="WRITE" file="#f_dir##f_name#"
-   output="cid,Photo,Fullname, Email ID,  Phone" addnewline="Yes">
+   output="Fullname, Email ID,  Phone" addnewline="Yes">
  
    <cfloop query="allcontacts">
    <cffile action="APPEND" file="#f_dir##f_name#"
-   output="#REPLACE(cid, ",", "","AlL")#,"#<img src='./contactimgs/#photo#' width=100 height=100/>#",#title&'.'&firstname&' '&lastname # , #email#, #mobile#"
+   output="#REPLACE(Fullname, ",", "","AlL")#,#title&'.'&firstname&' '&lastname # , #email#, #mobile#"
    addnewline="Yes">
    </cfloop>
 </cfoutput>
