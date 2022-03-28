@@ -8,9 +8,12 @@
                <cflocation URL="logout.cfm" addtoken="no">
           </cfif>
            <cfif isdefined("session.stLoggedInUser.loggedin") >
-               <cfset variables.user_id=session.stLoggedInUser.userID/>
+               <cfset variables.user_id=session.stLoggedInUser.userID />
           </cfif>
           <cfoutput>
+               <cfinvoke component="components.backend" method="displayreguserdata" returnvariable="alldetails">
+                    <cfinvokeargument name="registerid" value="#variables.user_id#" />
+               </cfinvoke>
                <div class="container mt-3">
                     <div class="card">
                          <div class="card-body d-flex justify-content-end align-items-center">
@@ -26,18 +29,25 @@
                                         <div class="card ">
                                              <div class="avatar-upload mt-3 mb-3">
                                                   <div class="avatar-edit">
-                                                  <form action="" enctype="multipart/form-data" method="post">
-                                                       <input type='file' name="imageUpload" id="imageUpload" accept=".png, .jpg, .jpeg" />
-                                                       <input type="hidden" name="picuserid" id="picuserid" value=#variables.user_id#/>
+                                                  <form action="" id="form1" enctype="multipart/form-data" method="post">
+                                                       <input type="file" name="imageUpload" id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                                       <input type="hidden" name="picuserid" id="picuserid"  value="#variables.user_id#" />
                                                        <label for="imageUpload" class=" d-flex justify-content-center align-items-center"><i class="fa fa-edit colr1"></i></label>
                                                   </div>
                                                   <div class="avatar-preview">
-                                                       <div id="imagePreview" style="background-image: url('images/user1.png');">
-                                                       </div>
+                                                       <cfif alldetails.profilepic EQ "" OR alldetails.profilepic EQ "null">
+                                                            <div id="imagePreview" style="background-image: url('images/user1.png');">
+                                                             </div>
+                                                       <cfelse>
+                                                            <div id="imagePreview" style="background-image: url('profilepics/#alldetails.profilepic#');">
+                                                            </div>
+                                                       </cfif>
                                                   </div>
+
+                                                
                                                   </form>
                                                   <div class="dashboard-avatar-text d-flex flex-column justify-content-end align-items-center pt-3 pb-0">
-										      <span class="txtcolr">MYCONTACTS</span> 
+										      <span class="txtcolr">#alldetails.fullname#</span> 
                                                         <span class="mt-2">
                                                             <a class="btn btn-primary btn-sm rounded-pill px-3" data-toggle="modal" data-target="##exampleModal">Create New Contact</a>
                                                         </span> 
@@ -93,7 +103,7 @@
                </div> 
                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered  modal-lg">
-                         <div class="modal-content ml-3">
+                         <div class="modal-content ml-3 ht">
                               <cfparam name="form.firstname" default="jes">
                               <cfparam name="form.lastname" default="bab">
                               <cfparam name="form.title" default="Mrs">
@@ -109,7 +119,7 @@
 
                               <div class="col-md-12 createcls">
                                    <div class="row">
-                                        <div class="col-md-9 bgwhites formstyle1 pt-3 pl-5 pr-5 pb-3">
+                                        <div class="col-md-9 bgwhites formstyle1 pt-3 pl-5 pr-5 pb-3 ht">
                                              <form id="addcontactform" action="contactaction.cfm" method="post" name="addcontactform" enctype="multipart/form-data">
                                                   <div class="cformhead">
                                                        <h4>CREATE  CONTACT</h4>
@@ -215,20 +225,20 @@
                                                                  </div>
                                                        </div>
                                                   </div>
-                                                  <div class="modal-footer">
-                                                       <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                                  <div class="modal-footer d-flex justify-content-center align-items-center">
+                                                       <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-dismiss="modal">Close</button>
                                                        
                                                             <input type="hidden" id="updatedata" name="updatedata" value=""/>
                                                       
                                                         <input type="hidden" name="user_id" value="#user_id#"/>
                                                         <input type="hidden" id="oldphoto" name="oldphoto" value=""/>
-                                                       <input type="submit" name="subcontact" id="subcontact" class="btn btn-primary  btn-sm" value="save">
+                                                       <input type="submit" name="subcontact" id="subcontact" class="btn btn-primary btn-sm rounded-pill px-3" value="save">
                                                        
                                                   </div>
                                              </form>
                                         </div>
-                                        <div class="col-md-3 bgblues" >
-                                             <div class="mrsp">
+                                        <div class="col-md-3 bgsky " >
+                                             <div class="mrsp ">
                                                   <img src="images/avt1.png"  id="theimage" width="150" height="130" />
                                                   
                                                   
@@ -240,36 +250,39 @@
                     </div>
                </div>  
                 <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered  modal-lg">
-                         <div class="modal-content ml-3">
+                    <div class="modal-dialog  modal-lg">
+                         <div class="modal-content ml-3 ht" >
                              <div class="col-md-12" >
                                    <div class="row" >
-                                        <div class="col-md-9 bgwhites formstyle1 pt-3 pl-5 pr-5 pb-3">
+                                        <div class="col-md-9 bgwhites formstyle1  pt-3 pl-5 pr-5 pb-3">
                                              <div class="cformhead">
                                                   <h4>CONTACT DETAILS</h4>
                                              </div>
-                                             <div class="row">
-                                                  <div class="col-md-8" style="height:100%">
-                                                       <table width="100%" class="table-responsive table-responsive-stack" id="tview">
-                                                            <tr>
-                                                                 <th class="txtcolrview">Contact ID </th><td>:</td><td><span id="coid"></span></td></tr><tr>
-                                                                 <th class="txtcolrview">Name</th><td>:</td><td><span id="cname"></span></td></tr><tr>
-                                                                 <th class="txtcolrview">Gender</th><td>:</td><td><span id="cgen"></span></td></tr><tr>
-                                                                 <th class="txtcolrview">BirthDay</th><td>:</td><td><span id="cbday"></span></td></tr><tr>
-                                                                 <th class="txtcolrview">Address</th><td>:</td><td><span id="cadd"></span></td></tr><tr>
-                                                                 <th class="txtcolrview">Pincode</th><td>:</td><td><span id="cpin"></span></td></tr><tr>
-                                                                 <th class="txtcolrview">Email ID</th><td>:</td><td><span id="cem"></span></td></tr><tr>
-                                                                 <th class="txtcolrview">Phone</th><td>:</td><td><span id="cph"></span></td></tr>
+                                             <div class="row rowcenter">
+                                                  <div class="col-md-8 ht " >
+                                                       <table width="100%"  class="table-responsive table-responsive-stack" id="tview">
+                                                            <tbody style="width: -webkit-fill-available !important;">
+                                                                 <tr>
+                                                                 <!-- <th class="txtcolrview">Contact ID </th><td>:</td><td><span id="coid"></span></td></tr><tr>-->
+                                                                      <th class="txtcolrview">Name</th><td >:</td><td><span id="cname"></span></td></tr><tr>
+                                                                      <th class="txtcolrview">Gender</th><td>:</td><td><span id="cgen"></span></td></tr><tr>
+                                                                      <th class="txtcolrview">BirthDay</th><td>:</td><td><span id="cbday"></span></td></tr><tr>
+                                                                      <th class="txtcolrview">Address</th><td>:</td><td><span id="cadd"></span></td></tr><tr>
+                                                                      <th class="txtcolrview">Pincode</th><td>:</td><td><span id="cpin"></span></td></tr><tr>
+                                                                      <th class="txtcolrview">Email ID</th><td>:</td><td><span id="cem"></span></td></tr><tr>
+                                                                      <th class="txtcolrview">Phone</th><td>:</td><td><span id="cph"></span></td>
+                                                                 </tr>
+                                                            </tbody>
                                                        </table>
                                                   </div>                                          
                                              </div>
-                                             <div >
-                                                  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                             <div class="d-flex justify-content-center align-items-center mb-5">
+                                                  <button type="button" class="btn btn-primary btn-sm rounded-pill px-3"  data-dismiss="modal">Close</button>
                                              </div>
                                         </div>
-                                        <div class="col-md-3 bgblues" >
+                                        <div class="col-md-3 bgsky" >
                                              <div class="mrsp">
-                                                  <img src="images/avt1.png"  id="theimageview" width="150" height="130" />
+                                                  <img src="images/avt1.png" class="img-fluid"  id="theimageview" width="150" height="130" />
                                              </div>
                                         </div>
                                    </div>
@@ -278,54 +291,6 @@
                     </div>
                </div>  
           </cfoutput>
-<script>
-  FiletoUpload.onchange = evt => {
-  const [file] = FiletoUpload.files
-  if (file) {
-    theimage.src = URL.createObjectURL(file)
-  }
-}
-     function readURL(input) 
-          {
-               
-               if (input.files && input.files[0]) 
-               {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                         $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-                         $('#imagePreview').hide();
-                         $('#imagePreview').fadeIn(650);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                         _userid=$("#picuserid").val();
-                         _pic=input.files[0].name;
-                         console.log(_userid);
-                         console.log(_pic);
-                         //  var formData = $('#form1').serialize();
-                         $.ajax({
-                                   type: "post", 
-                                   url: 'components/backend.cfc?method=updateprofilepic', 
-                                   data: {photo:_pic,uid:_userid}, 
-                                   // data: formData,
-                                   success: function (response) {
-                                        console.log(response);
-                                        p=JSON.parse(response);
-                                        
-                                        var newSrc = "./profilepics/"+p.DATA[0][10];
-                                        // $("#imagePreview").attr('src', newSrc);
-                                         $('#imagePreview').css('background-image', 'url('+newSrc +')');
-                                        
-                                   }
-                              });
-
-               }
-          }
-          $("#imageUpload").change(function()
-          {
-               readURL(this);
-          });
-          
-</script>
 
 	</body>
 </html>

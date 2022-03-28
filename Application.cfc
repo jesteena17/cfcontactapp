@@ -13,9 +13,11 @@
 	<cfreturn true />
 </cffunction>
 <cffunction name="onRequestStart" returntype="boolean" >
+     
 	<cfreturn true />
 </cffunction>
 <cffunction name="onSessionStart" returnType="void" output="false">
   <cfset session.stLoggedInUser.loggedin = false>
+ 
 </cffunction>
 </cfcomponent>

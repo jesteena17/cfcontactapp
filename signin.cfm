@@ -25,11 +25,11 @@
                                                             <cfinvokeargument name="loginpassword" value="#form.loginpassword#"/> 
                                                        </cfinvoke>
                                                        <cfif result EQ true>                 
-                                                            <cfif session.stLoggedInUser.userrole EQ "Admin">			
+                                                           <!--  <cfif session.stLoggedInUser.userrole EQ "Admin">			
                                                                  <cflocation url="./admin/" addtoken="no"> 
-                                                            <cfelse>
+                                                            <cfelse>-->
                                                                  <cflocation url="home.cfm" addtoken="no"> 
-                                                            </cfif>
+                                                            <!--</cfif>-->
                                                        <cfelse>
                                                             <cfset variables.errormsg="invalid username or password">
                                                             <cfset StructDelete(Session, "stLoggedInUser")/>

@@ -1,17 +1,4 @@
-<script src="js/jquery-3.6.0.js"></script>
-<style type="text/css" media="print">
-      @media print
-      {
-         @page {
-           margin-top: 0;
-           margin-bottom: 0;
-         }
-         body  {
-           padding-top: 72px;
-           padding-bottom: 72px ;
-         }
-      } 
-</style>
+<link href="css/printstyle.css" rel="stylesheet"/>
 <cfinvoke component="components.backend" method="displayalldataforreport" returnvariable="allcontacts"></cfinvoke>
 <cfoutput>
 <table width="100%" border="1"  id="employee"> 
@@ -40,13 +27,5 @@
                     </tr>
                </cfloop>
 </cfoutput>
-
-
-              <script type="text/javascript">
-    $(document).ready(function(){
-        window.print();
-    })
-    window.onafterprint = function() {
-        history.go(-1);
-    };
-</script>
+<script src="js/jquery-3.6.0.js"></script>
+<script src="js/printjs.js" type="text/javascript"></script>

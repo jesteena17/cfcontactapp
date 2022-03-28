@@ -213,7 +213,7 @@
 
            data-toggle="modal" data-target="##exampleModal"
 
-            <li class="nav-item">
+                                    <li class="nav-item">
                                              <a class="nav-link">&nbsp;You are in! 
                                                   #session.stLoggedInUser.username#(#session.stLoggedInUser.userrole#)
                                              </a>
@@ -433,3 +433,6 @@ https://community.adobe.com/t5/coldfusion-discussions/create-pdf-and-force-downl
                          where regid= <cfqueryparam value = "#arguments.uid#" cfsqltype = "cf_sql_integer" >
                     </cfquery>
                </cfif>
+
+book
+               https://books.google.co.in/books?id=uHDcvqdaj58C&pg=PA311&lpg=PA311&dq=Redirect+coldfusion+page+after+a+timeout&source=bl&ots=991LAnKW6n&sig=ACfU3U1RZeBP8SsW_Gr2Fqogjlnnl1UEvQ&hl=en&sa=X&ved=2ahUKEwiH88LU6ej2AhWXR2wGHdwqBVIQ6AF6BAgSEAM#v=snippet&q=logout&f=false
