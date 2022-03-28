@@ -1,5 +1,20 @@
+<script src="js/jquery-3.6.0.js"></script>
+<style type="text/css" media="print">
+      @media print
+      {
+         @page {
+           margin-top: 0;
+           margin-bottom: 0;
+         }
+         body  {
+           padding-top: 72px;
+           padding-bottom: 72px ;
+         }
+      } 
+</style>
 <cfinvoke component="components.backend" method="displayalldataforreport" returnvariable="allcontacts"></cfinvoke>
-<table width="100%" border="1"  > 
+<cfoutput>
+<table width="100%" border="1"  id="employee"> 
                <tr class="txtcolr">
                     <th >PHOTO</th>
                     <th >NAME</th>
@@ -24,3 +39,14 @@
                          <td>#allcontacts.fullname#</td>
                     </tr>
                </cfloop>
+</cfoutput>
+
+
+              <script type="text/javascript">
+    $(document).ready(function(){
+        window.print();
+    })
+    window.onafterprint = function() {
+        history.go(-1);
+    };
+</script>

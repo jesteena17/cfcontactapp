@@ -1,11 +1,11 @@
 <html>
      <head>
-          <title>Bootstrap 5 Example</title>
+          <title>MYCONTACTS</title>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <meta charset="utf-8">
           <!---<meta name="viewport" content="width=device-width, initial-scale=1">--->
-         
+         <link type="image/png" sizes="64x64" rel="icon" href="images/logo.png">
           <link href="css/bootstrap.css" rel="stylesheet">
           <link href="css/all.css" rel="stylesheet">
           <link href="css/styles.css" rel="stylesheet"/>
