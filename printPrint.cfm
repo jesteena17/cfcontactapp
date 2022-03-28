@@ -1,5 +1,7 @@
+<link href="css/printstyle.css" rel="stylesheet"/>
 <cfinvoke component="components.backend" method="displayalldataforreport" returnvariable="allcontacts"></cfinvoke>
-<table width="100%" border="1"  > 
+<cfoutput>
+<table width="100%" border="1"  id="employee"> 
                <tr class="txtcolr">
                     <th >PHOTO</th>
                     <th >NAME</th>
@@ -24,3 +26,6 @@
                          <td>#allcontacts.fullname#</td>
                     </tr>
                </cfloop>
+</cfoutput>
+<script src="js/jquery-3.6.0.js"></script>
+<script src="js/printjs.js" type="text/javascript"></script>

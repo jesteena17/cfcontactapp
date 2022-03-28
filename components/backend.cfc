@@ -103,7 +103,7 @@
           <cfquery  name="local.validateUser"   result="tmpResult">
                SELECT * FROM register WHERE
                (username=<cfqueryparam value="#arguments.loginid#" cfsqltype="cf_sql_varchar" maxlength="255"> 
-               or emailid=<cfqueryparam value="#arguments.loginid#" cfsqltype="cf_sql_varchar" maxlength="255"> ) 
+               or emailid=<cfqueryparam value="#arguments.loginid#" cfsqltype="cf_sql_varchar" maxlength="255">) 
                AND password=<cfqueryparam value="#hash(arguments.loginpassword)#" cfsqltype="cf_sql_varchar" maxlength="4000">
           </cfquery>
           <cfif tmpResult.RecordCount EQ 1>
@@ -206,9 +206,41 @@
                where cid= <cfqueryparam value = "#arguments.contid#" cfsqltype = "cf_sql_integer" >
           </cfquery>
           <cfset variables.getNumberOfRecords = listLen(myupdateResult.RecordCount)> 
-          <cfset variables.getNumberOfRecords = listLen(myupdateResult.RecordCount)> 
           <cfreturn variables.getNumberOfRecords>    
      </cffunction>  
+     <cffunction name = "updateprofilepic"  access="remote" returnType="any" returnFormat="JSON">
+          <cfargument name="photo"  required="true"/>
+          <cfargument name="uid" required="true"/>
+          <cfset variables.validMimeTypes =  {
+                                         'image/jpeg': {extension: 'jpg'}
+                                    ,'image/png': {extension: 'png'}
+                                             } />
+          <cfset variables.thisPath=expandPath('.') & '/profilepics/'>
+          <cfset variables.f_dir=GetDirectoryFromPath(variables.thisPath)>
+          <cftry>
+               <cffile action="upload" filefield="imageUpload" destination="#variables.f_dir#" mode="777"
+                    accept="#StructKeyList(variables.validMimeTypes)#" strict="true" result="uploadResult"
+                    nameconflict="makeunique">
+               <cfquery name = "local.uppcontact"  result="mypupdateResult">
+                    update register
+                    set   profilepic=<cfqueryparam value = "#arguments.photo#" cfsqltype = "cf_sql_varchar"/>
+                    where regid= <cfqueryparam value = "#arguments.uid#" cfsqltype = "cf_sql_integer" >
+               </cfquery>
+               
+               <cfcatch type="any">
+                    <cfif FindNoCase( "No data was received in the uploaded" , cfcatch.message )>
+                         <cfabort showerror="Zero length file">
+                    <cfelseif FindNoCase( "The MIME type or the Extension of the uploaded file", cfcatch.message )>
+                         <cfabort showerror="Invalid file type">
+                    <cfelseif FindNoCase( "did not contain a file." , cfcatch.message )>
+                         <cfabort showerror="Empty form field">
+                    <cfelse>
+                         <cfabort showerror="Unhandled File Upload Error">
+                    </cfif>
+               </cfcatch>
+          </cftry>
+          <cfreturn uploadResult>
+     </cffunction>   
 </cfcomponent>
 
 

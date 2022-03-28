@@ -177,26 +177,27 @@ $(document).on('click', '.editbtn', function() {
     });
 });
 
-
+/*
 function PrintDocument() {
-     $("#employee th:nth-child(5)").hide();
+     // $("#employee th:nth-child(5)").hide();
 
-          $("#employee td:nth-child(5)").hide();
-            $("#employee td:nth-child(6)").hide();
-              $("#employee td:nth-child(7)").hide();
+     //      $("#employee td:nth-child(5)").hide();
+     //        $("#employee td:nth-child(6)").hide();
+     //          $("#employee td:nth-child(7)").hide();
    
              var divToPrint  = document.getElementById("employee");
-    
-    newWin = window.open("");
-      newWin.document.write(divToPrint.outerHTML);
-      newWin.print();
-      newWin.close()
+     window.print();
+//     newWin = window.open("");
+     //  newWin.document.write(divToPrint.outerHTML);
+     //  newWin.print();
+     //  newWin.close()
     
           //Or show hidden columns again
-          $("#employee th:nth-child(5)").show();
-         $("#employee td:nth-child(5)").show();
- $("#employee td:nth-child(6)").show();
-    $("#employee td:nth-child(7)").show();
+//           $("#employee th:nth-child(5)").show();
+//          $("#employee td:nth-child(5)").show();
+//  $("#employee td:nth-child(6)").show();
+//     $("#employee td:nth-child(7)").show();
 
          
       }   
+      */
