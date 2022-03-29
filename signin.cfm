@@ -8,7 +8,7 @@
                <div class="container d-flex justify-content-center align-items-center">
                      <div class="col-md-7">
                          <div class="row m-5 no-gutters shadow-lg logindiv">
-                              <div class="col-md-4 d-none d-md-block bg1 d-flex justify-content-center align-items-center logindivleft">
+                              <div class="col-md-4 d-none d-md-block   bg1  logindivleft">
                                    <img src="images/logo.png" width="55" height="55" />
                               </div>
                               <div class="col-md-8 bg-white p-3 logindivright">
@@ -82,7 +82,7 @@
                                                        d="M320 0C143.234 0 0 143.234 0 320s143.234 320 320 320 320-143.234 320-320S496.766 0 320 0zm4.76 560.003C192.12 560.003 84.757 452.651 84.757 320c0-132.651 107.364-240.003 240.003-240.003 64.772 0 118.998 23.646 160.774 62.753l-65.115 62.764c-17.894-17.114-49.005-36.992-95.647-36.992C242.78 168.522 176.01 236.4 176.01 320c0 83.6 66.887 151.478 148.762 151.478 95.01 0 130.643-68.233 136.124-103.513l-136.136-.012v-82.241l226.633.012c1.996 12.012 3.768 24.012 3.768 39.768.118 137.116-91.761 234.523-230.353 234.523l-.047-.012z" />
                                              </svg>
                                         </div>
-                                        <div class="pt-4 text-center">
+                                        <div class="pt-4 text-center clrblk">
                                              Don't have an account? <a href="signup.cfm">Sign Up</a>
                                         </div>
                                    </div>

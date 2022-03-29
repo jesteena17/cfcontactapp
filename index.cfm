@@ -3,7 +3,7 @@
 	<head>
 		<cfinclude template="header.cfm" >	
 	</head>
-     <body>
+     <body class="bodi">
           <cfoutput>
           </cfoutput>
      </body>

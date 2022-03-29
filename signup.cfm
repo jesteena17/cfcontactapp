@@ -7,15 +7,18 @@
           <cfoutput>
                <div class="container d-flex justify-content-center align-items-center">
                     <div class="col-md-7">
+                         <cfif IsDefined("url.message")>
+                              <div class="col-md-12 alert alert-success">
+                                   Successfully Registered
+                              </div>
+                         </cfif>
                          <div class="row m-5 no-gutters shadow-lg logindiv">
-                              <div class="col-md-4 d-none d-md-block bg1 d-flex justify-content-center align-items-center logindivleft">
-                                   <img src="images/logo.png" width="25" height="25" />
+                              <div class="col-md-4 d-none d-md-block bg1 logindivleft">
+                                   <img src="images/logo.png" width="55" height="55" />
                               </div>
                               <div class="col-md-8 bg-white p-3 logindivright">
                                    <h3 class="pb-1">Sign Up Form</h3>
                                    <div class="form-style">
-                                   
-
                                         <cfparam name="form.fullname" default="" >
                                         <cfparam name="form.emailid" default="" >
                                         <cfparam name="form.username" default="">
@@ -33,12 +36,11 @@
                                                        <cfinvokeargument name="userrole" value="#form.userrole#" />
                                                   </cfinvoke>
                                              <cfif result GT 0>
-                                                  <script>
-                                                       alert("Successfully Registered");
-                                                  </script>
+                                             <cflocation url = "signup.cfm?message=success" addtoken="no">
                                              </cfif>
                                              </cfif>
                                         </cfif>
+                                   
                                         <form action="" id="signupForm" method="post" >
                                              <div class="form-group pb-3">
                                                   <input type="text" name="fullname" id="fullname" value="#form.fullname#" placeholder="Fullname" class="form-control-sm w-100"
@@ -84,12 +86,12 @@
                                                   </cfif>
                                              </div>
                                              <div class="pb-2">
-                                              <input type="hidden" name="userrole" id="userrole" value="User" />
+                                             <input type="hidden" name="userrole" id="userrole" value="User" />
                                                   <input type="submit"
                                                        class="btn btn-outline-primary w-100 font-weight-bold mt-2 form-control-lg" id="regbtn" value="Sign Up" name="regsubmit"/>
                                              </div>
                                         </form>  
-                                              
+                                             
                                         <div class="pt-4 text-center">
                                              Already have an account? <a href="signin.cfm">Sign in</a>
                                         </div>
