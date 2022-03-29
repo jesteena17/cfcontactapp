@@ -1,6 +1,13 @@
 body {
      background-color: #d8e5f1;
 }
+.bodi {
+     background: url(../images/bg1.png) no-repeat center center fixed;
+     -webkit-background-size: cover;
+     -moz-background-size: cover;
+     -o-background-size: cover;
+     background-size: cover;
+}
 .form-style input[type="text"],
 .form-style input[type="password"],
 .form-style input[type="email"],
@@ -26,7 +33,11 @@ body {
      color: #ccc;
 }
 button {
-     height: 50px;
+     height: 35px;
+     outline: none !important;
+}
+input[type="submit"] {
+     height: 35px;
      outline: none !important;
 }
 #regbtn {
@@ -181,19 +192,25 @@ button {
      background-color: #daeef7;
 }
 .mrsp {
-     margin-top: 7rem;
      display: flex;
-     justify-content: center;
+     justify-content: space-around;
+     align-items: center;
+     padding: 10px;
+}
+.bgsky {
+     background-color: #daeef7;
 }
 .cformhead {
      background-color: #daeef7;
-     width: 454px;
-     margin-top: 32px;
-     padding: 11px 102px 1px 88px;
      display: flex;
-     justify-content: right;
+     margin-top: 30px;
+     padding-top: 5px;
+     justify-content: space-around;
      align-items: center;
      color: #337ab7;
+}
+.rowcenter {
+     justify-content: center !important;
 }
 
 .percon {
@@ -252,7 +269,17 @@ table {
      color: #337ab7;
      font-weight: 900;
      font-size: 10pt;
+     width: 30%;
 }
 #tview tr {
      height: 50px;
+}
+#tview td {
+     width: 33% !important;
+}
+.ht {
+     height: 100% !important;
+}
+.clrblk {
+     color: black !important;
 }

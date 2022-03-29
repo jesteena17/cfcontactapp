@@ -4,6 +4,73 @@
 		<cfinclude template="header.cfm" >
 	</head>
      <body>
+          <cfset variables.message=""/>
+           <!--  added new -->
+          <cfif (structKeyExists(form, "subcontact"))> 
+               <cfinvoke component="components.backend" method="validatecontactform" returnvariable="valconresult"></cfinvoke>
+               <cfif refind(':("[^"]+"|\d+|true|false)', serializeJSON(valconresult)) EQ 0>  
+                    <cfif form.updatedata NEQ "">
+                         <cfset variables.filefield="#form.oldphoto#"/>
+                         <cfif form.FiletoUpload NEQ "">
+                              <cfinvoke component="components.backend" method="uploadfile" returnvariable="fileresult"></cfinvoke>
+                              <cfif fileresult.serverFile EQ "">
+                                   <cfset variables.filefield="#form.oldphoto#"/>
+                              <cfelse>
+                                   <cfset variables.filefield=fileresult.serverFile/>
+                              </cfif>
+                         </cfif>
+                         <cfinvoke component="components.backend" method="updatecontact" returnvariable="result">
+                              <cfinvokeargument name="title" value="#form.title#" />
+                              <cfinvokeargument name="firstname" value="#form.firstname#" />
+                              <cfinvokeargument name="lastname" value="#form.lastname#" />
+                              <cfinvokeargument name="gender" value="#form.gender#" />
+                              <cfinvokeargument name="dob" value="#form.dob#" />
+                              <cfinvokeargument name="email" value="#form.email#" />
+                              <cfinvokeargument name="phone" value="#form.phone#" />
+                              <cfinvokeargument name="photo" value="#variables.filefield#" />
+                              <cfinvokeargument name="address" value="#form.address#" />
+                              <cfinvokeargument name="street" value="#form.street#" />
+                              <cfinvokeargument name="pincode" value="#form.pincode#" /> 
+                              <cfinvokeargument name="contid" value="#form.updatedata#"/>  
+                         </cfinvoke>
+                         <cfif result GT 0>
+                              <cfset variables.message="Data Updated Successfully"/>
+                              <cflocation url="home.cfm" addtoken="no">
+                         </cfif>
+                    <cfelse>
+                         <cfset variables.filefield="noimage.png"/>
+                         <cfif form.FiletoUpload NEQ "">
+                              <cfinvoke component="components.backend" method="uploadfile" returnvariable="fileresult"></cfinvoke>
+                              <cfif fileresult.serverFile EQ "">
+                                   <cfset variables.filefield="noimage.png"/>
+                              <cfelse>
+                                   <cfset variables.filefield=fileresult.serverFile/>
+                              </cfif>
+                         </cfif> 
+                         <cfinvoke component="components.backend" method="storecontactinfo" returnvariable="result">
+                              <cfinvokeargument name="title" value="#form.title#" />
+                              <cfinvokeargument name="firstname" value="#form.firstname#" />
+                              <cfinvokeargument name="lastname" value="#form.lastname#" />
+                              <cfinvokeargument name="gender" value="#form.gender#" />
+                              <cfinvokeargument name="dob" value="#form.dob#" />
+                              <cfinvokeargument name="email" value="#form.email#" />
+                              <cfinvokeargument name="phone" value="#form.phone#" />
+                              <cfinvokeargument name="photo" value="#variables.filefield#" />
+                              <cfinvokeargument name="address" value="#form.address#" />
+                              <cfinvokeargument name="street" value="#form.street#" />
+                              <cfinvokeargument name="pincode" value="#form.pincode#" />
+                              <cfinvokeargument name="userid" value="#form.user_id#" />
+                         </cfinvoke>
+                         <cfif result GT 0>
+                         <cfset variables.message="Data Saved Successfully"/>
+                         <cflocation url="home.cfm" addtoken="no">
+                         </cfif>
+                    </cfif>
+               <cfelse>
+                    <script>$("##exampleModal").modal("show")</script>
+               </cfif>
+          </cfif>
+          <!--  end added new -->
           <cfif session.stLoggedInUser.loggedin EQ false >
                <cflocation URL="logout.cfm" addtoken="no">
           </cfif>
@@ -23,28 +90,26 @@
                          </div>
                     </div>
                     <div class="row mt-3" >
-                         <div class="col-md-12">
+                         <div class="col-md-12 col-xs-12">
                               <div class="row">
                                    <div class="col-md-3 ">
                                         <div class="card ">
                                              <div class="avatar-upload mt-3 mb-3">
-                                                  <div class="avatar-edit">
                                                   <form action="" id="form1" enctype="multipart/form-data" method="post">
-                                                       <input type="file" name="imageUpload" id="imageUpload" accept=".png, .jpg, .jpeg" />
-                                                       <input type="hidden" name="picuserid" id="picuserid"  value="#variables.user_id#" />
-                                                       <label for="imageUpload" class=" d-flex justify-content-center align-items-center"><i class="fa fa-edit colr1"></i></label>
-                                                  </div>
-                                                  <div class="avatar-preview">
-                                                       <cfif alldetails.profilepic EQ "" OR alldetails.profilepic EQ "null">
-                                                            <div id="imagePreview" style="background-image: url('images/user1.png');">
-                                                             </div>
-                                                       <cfelse>
-                                                            <div id="imagePreview" style="background-image: url('profilepics/#alldetails.profilepic#');">
-                                                            </div>
-                                                       </cfif>
-                                                  </div>
-
-                                                
+                                                       <div class="avatar-edit">
+                                                            <input type="file" name="imageUpload" id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                                            <input type="hidden" name="picuserid" id="picuserid"  value="#variables.user_id#" />
+                                                            <label for="imageUpload" class=" d-flex justify-content-center align-items-center"><i class="fa fa-edit colr1"></i></label>
+                                                       </div>
+                                                       <div class="avatar-preview">
+                                                            <cfif alldetails.profilepic EQ "" OR alldetails.profilepic EQ "null">
+                                                                 <div id="imagePreview" style="background-image: url('images/user1.png');">
+                                                                 </div>
+                                                            <cfelse>
+                                                                 <div id="imagePreview" style="background-image: url('profilepics/#alldetails.profilepic#');">
+                                                                 </div>
+                                                            </cfif>
+                                                       </div>
                                                   </form>
                                                   <div class="dashboard-avatar-text d-flex flex-column justify-content-end align-items-center pt-3 pb-0">
 										      <span class="txtcolr">#alldetails.fullname#</span> 
@@ -58,24 +123,31 @@
                                   <cfinvoke component="components.backend" method="displayalldata" returnvariable="allcontacts">
                                         <cfinvokeargument name="usersid" value="#variables.user_id#" />
                                   </cfinvoke>
-                                   <div class="col-md-9">
+                                   <div class="col-md-9 col-xs-9">
+                                        <cfif IsDefined("message") and not variables.message EQ "">
+                                        <div class="col-md-12 alert alert-success">
+                                             #variables.message#
+                                        </div>
+                                        </cfif>
                                         <div class="card">
-                                             <div class="card-body d-flex justify-content-start align-items-center">
-                                                  <table class="table table-responsive w-auto " >
+                                             <div class="card-body">
+                                                  <table width="100%" class="table table-responsive" >
                                                        <tr class="txtcolr">
                                                             <th >PHOTO</th>
                                                             <th >NAME</th>
                                                             <th >EMAIL ID</th>
                                                             <th >PHONE NUMBER</th>
-                                                            <th colspan="3" class="text-center">ACTIONS</th>
+                                                            <th colspan="3" class="text-center">ACTIONS </th>
                                                        </tr>
                                                        <cfloop array="#allcontacts#" item="allcontacts">
                                                             <tr>
-                                                                 <td><img src="./contactimgs/#allcontacts.getPhoto()#" width="100" height="100"/></td>
+                                                                 <td>
+                                                                 <img src="./contactimgs/#allcontacts.getPhoto()#" class="img-fluid" width="100" height="100"/>
+                                                                 </td>
                                                                  <td>#allcontacts.getTitle()&'.'&allcontacts.getFirstname()&' '&allcontacts.getLastname()#</td>
                                                                  <td>#allcontacts.getEmail()#</td>
                                                                  <td>#allcontacts.getMobile()#</td>
-                                                                  <td>
+                                                                 <td>
                                                                       <a class="btn btn btn-outline-primary btn-sm rounded-pill px-3 editbtn" data-conid="#allcontacts.getCid()#" id="editbtn"  data-toggle="modal" data-target="##exampleModal">
                                                                            Edit
                                                                       </a>
@@ -106,23 +178,22 @@
                          <div class="modal-content ml-3 ht">
                               <cfparam name="form.firstname" default="jes">
                               <cfparam name="form.lastname" default="bab">
-                              <cfparam name="form.title" default="Mrs">
-                              <cfparam name="form.gender" default="Female">
+                              <cfparam name="form.title" default="Ms">
+                              <cfparam name="form.gender" default="Male">
                               <cfparam name="form.dob" default="1993-05-17">
                               <cfparam name="form.email" default="jes@gmail.com">
-                              <cfparam name="form.phone" default="17789867">
+                              <cfparam name="form.phone" default="1111111111">
                               <cfparam name="form.FiletoUpload" default="">
                               <cfparam name="form.address" default="tvm">
                               <cfparam name="form.street" default="kvtm"> 
-                              <cfparam name="form.pincode" default="1111"> 
-
-
-                              <div class="col-md-12 createcls">
+                              <cfparam name="form.pincode" default="111111"> 
+                             
+                              <div class="col-md-12 col-xs-12 createcls">
                                    <div class="row">
                                         <div class="col-md-9 bgwhites formstyle1 pt-3 pl-5 pr-5 pb-3 ht">
-                                             <form id="addcontactform" action="contactaction.cfm" method="post" name="addcontactform" enctype="multipart/form-data">
+                                             <form id="addcontactform" action="" method="post" name="addcontactform" enctype="multipart/form-data">
                                                   <div class="cformhead">
-                                                       <h4>CREATE  CONTACT</h4>
+                                                       <h4 id="modheading">CREATE  CONTACT</h4>
                                                   </div>
                                                   <div class="mt-3 percon">
                                                        <h5>Personal Contact</h5>
@@ -132,31 +203,45 @@
                                                        <div class="row">
                                                             <div class="col-sm-4">
                                                                  <div class="form-group">
-                                                                 <label class="colr1" id="title" for="title">Title *</label><br>
-                                                                 <select name="title" class="addfiledsel" id="title">
-                                                                      <option value=""></option>
-                                                                      <option value="Mr" #form.title == 'Mr' ? 'selected="selected"' : ''#>Mr.</option>
-                                                                      <option value="Mrs"  #form.title == 'Mrs' ? 'selected="selected"' : ''#>Mrs.</option>
-                                                                      <option value="Ms"  #form.title == 'Ms' ? 'selected="selected"' : ''#>Ms.</option>
-                                                                 </select>
+                                                                      <label class="colr1" id="titlelab" for="title">Title *</label><br>
+                                                                      <select name="title" class="addfiledsel" id="title">
+                                                                           <option value=""></option>
+                                                                           <option value="Mr" #form.title == 'Mr' ? 'selected="selected"' : ''#>Mr.</option>
+                                                                           <option value="Mrs"  #form.title == 'Mrs' ? 'selected="selected"' : ''#>Mrs.</option>
+                                                                           <option value="Ms"  #form.title == 'Ms' ? 'selected="selected"' : ''#>Ms.</option>
+                                                                      </select>
+                                                                      <cfif isDefined("valconresult.error1")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error1#</span></b>
+                                                                      </p>
+                                                                 </cfif>
                                                                  </div>
                                                             </div>
                                                             <div class="col-sm-4">
                                                                  <div class="form-group">
-                                                                 <label class="colr1" for="form_email">Firstname *</label>
-                                                                 <input id="firstname" type="text" value="#form.firstname#" name="firstname" class="form-control addfileds" placeholder="Your Firstname">
+                                                                      <label class="colr1" for="form_email">Firstname *</label>
+                                                                      <input id="firstname" type="text" value="#form.firstname#" name="firstname" class="form-control addfileds" placeholder="Your Firstname">
+                                                                      <cfif isDefined("valconresult.error2")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error2#</span></b>
+                                                                      </p>
+                                                                 </cfif>
                                                                  </div>
                                                             </div>
                                                             <div class="col-sm-4">
                                                                  <div class="form-group">
-                                                                 <label class="colr1" for="form_phone">Lastname *</label>
-                                                                 <input id="lastname" type="text" name="lastname" value="#form.lastname#" class="form-control addfileds" placeholder="Your Lastname">
+                                                                      <label class="colr1" for="form_phone">Lastname *</label>
+                                                                      <input id="lastname" type="text" name="lastname" value="#form.lastname#" class="form-control addfileds" placeholder="Your Lastname">
+                                                                      <cfif isDefined("valconresult.error3")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error3#</span></b>
+                                                                      </p>
+                                                                 </cfif>
                                                                  </div>
                                                             </div>
                                                        </div>
                                                   </div>
                                                   <div class="clearfix"></div>
-
                                                   <div class="row">
                                                        <div class="col-md-6">
                                                             <div class="form-group">
@@ -166,28 +251,48 @@
                                                                       <option value="Male"  #form.gender == 'Male' ? 'selected="selected"' : ''#>Male</option>
                                                                       <option value="Female" #form.gender == 'Female' ? 'selected="selected"' : ''#>Female</option>
                                                                  </select>
-                                                                 </div>
+                                                                 <cfif isDefined("valconresult.error4")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error4#</span></b>
+                                                                      </p>
+                                                                 </cfif>
+                                                            </div>
                                                        </div>
                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Date Of Birth *</label>
                                                                  <input id="dob" type="date" value="#form.dob#" name="dob" class="form-control addfileds" >
-                                                                 </div>
+                                                                 <cfif isDefined("valconresult.error5")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error5#</span></b>
+                                                                      </p>
+                                                                 </cfif>
+                                                            </div>
                                                        </div>
                                                   </div>
                                                   <div class="clearfix"></div>
-                                                                                <div class="row">
+                                                  <div class="row">
                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Email *</label><br>
-                                                                      <input id="email" type="email" value="#form.email#"  name="email" class="form-control addfileds" placeholder="Your Email">
-                                                                 </div>
+                                                                 <input id="email" type="email" value="#form.email#"  name="email" class="form-control addfileds" placeholder="Your Email">
+                                                                 <cfif isDefined("valconresult.error6")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error6#</span></b>
+                                                                      </p>
+                                                                 </cfif>
+                                                            </div>
                                                        </div>
                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Phone *</label>
                                                                  <input id="phone" type="tel" name="phone" value="#form.phone#" class="form-control addfileds" placeholder="Your Phone" >
-                                                                 </div>
+                                                                 <cfif isDefined("valconresult.error")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error7#</span></b>
+                                                                      </p>
+                                                                 </cfif>
+                                                            </div>
                                                        </div>
                                                   </div>
                                                   <div class="clearfix"></div>
@@ -196,9 +301,8 @@
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Upload Photo *</label>
                                                                  <input  type="file" name="FiletoUpload" id="FiletoUpload" class="form-control addfileds" >
-                                                                 </div>
+                                                            </div>
                                                        </div>
-                                                       
                                                   </div>
                                                   <div class="clearfix"></div>
                                                   <div class="mt-3 percon">
@@ -210,38 +314,48 @@
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Address *</label>
                                                                  <input id="address" type="text" name="address" value="#form.address#" class="form-control addfileds" placeholder="Your Address">
-                                                                 </div>
+                                                                 <cfif isDefined("valconresult.error8")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error8#</span></b>
+                                                                      </p>
+                                                                 </cfif>
+                                                            </div>
                                                        </div>
                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone"> Street *</label>
                                                                  <input id="street" type="text" name="street" value="#form.street#" class="form-control addfileds" placeholder="Your Street">
-                                                                 </div>
+                                                                 <cfif isDefined("valconresult.error9")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error9#</span></b>
+                                                                      </p>
+                                                                 </cfif>     
+                                                            </div>
                                                        </div>
                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone"> Pincode *</label>
                                                                  <input id="pincode" type="text" name="pincode" value="#form.pincode#" class="form-control addfileds" placeholder="Your Pincode">
-                                                                 </div>
+                                                                 <cfif isDefined("valconresult.error10")>
+                                                                      <p align="left">
+                                                                           <span class="sserrors">#valconresult.error10#</span></b>
+                                                                      </p>
+                                                                 </cfif>
+                                                            </div>
                                                        </div>
                                                   </div>
                                                   <div class="modal-footer d-flex justify-content-center align-items-center">
                                                        <button type="button" class="btn btn-secondary btn-sm rounded-pill px-3" data-dismiss="modal">Close</button>
-                                                       
                                                             <input type="hidden" id="updatedata" name="updatedata" value=""/>
-                                                      
-                                                        <input type="hidden" name="user_id" value="#user_id#"/>
-                                                        <input type="hidden" id="oldphoto" name="oldphoto" value=""/>
+                                                       <input type="hidden" name="user_id" value="#user_id#"/>
+                                                       <input type="hidden" id="oldphoto" name="oldphoto" value=""/>
                                                        <input type="submit" name="subcontact" id="subcontact" class="btn btn-primary btn-sm rounded-pill px-3" value="save">
-                                                       
                                                   </div>
                                              </form>
                                         </div>
                                         <div class="col-md-3 bgsky " >
                                              <div class="mrsp ">
-                                                  <img src="images/avt1.png"  id="theimage" width="150" height="130" />
-                                                  
-                                                  
+                                                  <img src="images/noimage.png"  id="theimage" width="150" height="130" />
                                              </div>
                                         </div>
                                    </div>
@@ -249,10 +363,10 @@
                          </div>
                     </div>
                </div>  
-                <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewModalLabel" aria-hidden="true">
+               <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="ViewModalLabel" aria-hidden="true">
                     <div class="modal-dialog  modal-lg">
                          <div class="modal-content ml-3 ht" >
-                             <div class="col-md-12" >
+                             <div class="col-md-12 col-xs-12" >
                                    <div class="row" >
                                         <div class="col-md-9 bgwhites formstyle1  pt-3 pl-5 pr-5 pb-3">
                                              <div class="cformhead">
@@ -282,7 +396,7 @@
                                         </div>
                                         <div class="col-md-3 bgsky" >
                                              <div class="mrsp">
-                                                  <img src="images/avt1.png" class="img-fluid"  id="theimageview" width="150" height="130" />
+                                                  <img src="images/noimage.png" class="img-fluid"  id="theimageview" width="150" height="130" />
                                              </div>
                                         </div>
                                    </div>

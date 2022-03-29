@@ -1,11 +1,8 @@
 
 $().ready(function() {
-
-     // validate signup form on keyup and submit
      $("#signupForm").validate({
           rules: {
                fullname: "required",
-     
                username: {
                     required: true,
                     minlength: 2
@@ -44,7 +41,7 @@ $().ready(function() {
                
           }
      });
-     // propose username by combining first- and lastname
+     // suggest a uname
      $("#username").focus(function() {
           var fullname = $("#emailid").val();
           
@@ -52,8 +49,6 @@ $().ready(function() {
                this.value = fullname ;
           }
      });
-
-
      $("#signinForm").validate({
           rules: {
                
@@ -76,9 +71,6 @@ $().ready(function() {
                }
           }
      });
-
-
-     
      $("#addcontactform").validate({
           rules: {
                firstname: "required",
@@ -103,13 +95,11 @@ $().ready(function() {
                address: "Address Required *",
                street: "Street Required *",
                pincode: "Pincode Required *"
-          },
-          
+          },  
      });
 });
-
-
-$(document).on('click', '.editbtn', function() {
+$(document).on('click', '.editbtn', function () {
+     $("#modheading").html("EDIT CONTACT");
      var _contactid = $(this).data('conid');
      $.ajax({
         type: "post", 
@@ -118,64 +108,127 @@ $(document).on('click', '.editbtn', function() {
         beforeSend: function () {
             $("#subcontact").attr("disabled", true);
         },
-        success: function (response) {
-           p=JSON.parse(response);
-          $("#updatedata").val(p.DATA[0][0]);
-          $("#title").val(p.DATA[0][1]);
-          $("#firstname").val(p.DATA[0][2]);
-          $("#lastname").val(p.DATA[0][3]);
-          $("#gender").val(p.DATA[0][4]);
-          let dateStr =new Date(p.DATA[0][5]);
-          var now = new Date(p.DATA[0][5]);
-          var day = ("0" + now.getDate()).slice(-2);
-          var month = ("0" + (now.getMonth() + 1)).slice(-2);
-          var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-          $('#dob').val(today);
-          $("#email").val(p.DATA[0][6]);
-          $("#phone").val(p.DATA[0][7]);
-          $("#address").val(p.DATA[0][8]);
-          $("#street").val(p.DATA[0][9]);
-          $("#oldphoto").val(p.DATA[0][10]);
-          $("#pincode").val(p.DATA[0][11]);
-          var newSrc = "./contactimgs/"+p.DATA[0][10];
-          $("#theimage").attr('src', newSrc);
-          $("#subcontact").removeAttr("disabled");
-        }
+          success: function (response)
+          {
+               p=JSON.parse(response);
+               $("#updatedata").val(p.DATA[0][0]);
+               $("#title").val(p.DATA[0][1]).change();
+               $("#firstname").val(p.DATA[0][2]);
+               $("#lastname").val(p.DATA[0][3]);
+               $("#gender").val(p.DATA[0][4]).change();
+               let dateStr =new Date(p.DATA[0][5]);
+               var now = new Date(p.DATA[0][5]);
+               var day = ("0" + now.getDate()).slice(-2);
+               var month = ("0" + (now.getMonth() + 1)).slice(-2);
+               var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+               $('#dob').val(today);
+               $("#email").val(p.DATA[0][6]);
+               $("#phone").val(p.DATA[0][7]);
+               $("#address").val(p.DATA[0][8]);
+               $("#street").val(p.DATA[0][9]);
+               $("#oldphoto").val(p.DATA[0][10]);
+               $("#pincode").val(p.DATA[0][11]);
+               var newSrc = "./contactimgs/"+p.DATA[0][10];
+               $("#theimage").attr('src', newSrc);
+               $("#subcontact").removeAttr("disabled");
+          }
     });
 });
-
-   $(document).on('click', '.viewbtn', function() {
-
+$(document).on('click', '.viewbtn', function() {
      var _contactid = $(this).data('conid');
-     
      $.ajax({
         type: "post", 
         url: 'components/backend.cfc?method=displaydata', 
         data: {editid:_contactid}, 
-       
         success: function (response) {
            p=JSON.parse(response);
-          $("#coid").text(p.DATA[0][0]);
-          $("#cname").text(p.DATA[0][1]+' '+p.DATA[0][2]+' '+p.DATA[0][3]);
-         
-          $("#cgen").text(p.DATA[0][4]);
+          // $("#coid").html(p.DATA[0][0]);
+          $("#cname").html(p.DATA[0][1]+'. '+p.DATA[0][2]+' '+p.DATA[0][3]);
+          $("#cgen").html(p.DATA[0][4]);
           let dateStr =new Date(p.DATA[0][5]);
           var now = new Date(p.DATA[0][5]);
           var day = ("0" + now.getDate()).slice(-2);
           var month = ("0" + (now.getMonth() + 1)).slice(-2);
           var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-          $('#cbday').text(today);
-          $("#cem").text(p.DATA[0][6]);
-          $("#cph").text(p.DATA[0][7]);
-          $("#cadd").text(p.DATA[0][8]+"<br>"+p.DATA[0][9]);
-
-          $("#cpin").text(p.DATA[0][11]);
+          $('#cbday').html(today);
+          $("#cem").html(p.DATA[0][6]);
+          $("#cph").html(p.DATA[0][7]);
+          $("#cadd").html(p.DATA[0][8]+",<br>"+p.DATA[0][9]);
+          $("#cpin").html(p.DATA[0][11]);
           var newSrc = "./contactimgs/"+p.DATA[0][10];
           $("#theimageview").attr('src', newSrc);
-          
         }
     });
 });
+$(document).ready(function ()
+     {
+          $('input[type=file]#FiletoUpload').change(function () 
+               {
+                    const [file] = FiletoUpload.files
+                    if (file) {
+                    theimage.src = URL.createObjectURL(file)
+                    }
+          });  
+     
+          function readURL(input) 
+          {
+               //console.log(input);
+                    if (input.files && input.files[0]) 
+                    {
+                         var reader = new FileReader();
+                         reader.onload = function (e)
+                         {
+                              $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                              $('#imagePreview').hide();
+                              $('#imagePreview').fadeIn(650);
+                         }
+                         reader.readAsDataURL(input.files[0]);
+                         _userid=$("#picuserid").val();
+                         _pic=input.files[0].name;
+                        // console.log("uid"+_userid);
+                        // console.log("foto"+_pic);
+                         var form = $('#form1')[0];
+                         var data = new FormData(form);
+                         data.append("photo", _pic);
+                         data.append("uid", _userid);
+                         $.ajax(
+                              {
+                                   type: "post", 
+                                   url: 'components/backend.cfc?method=updateprofilepic', 
+                                   // data: { photo : _pic,uid : _userid }, 
+                                   //enctype: 'multipart/form-data',
+                                   data:data,
+                                   cache: false,
+                                   contentType: false,
+                                   processData: false,
+                                   success: function (response)
+                                   {
+                                        p=JSON.parse(response);
+                                      //  console.log(p.SERVERFILE);
+                                        // var newSrc = "./profilepics/"+p.DATA[0][10];
+                                        //$("#imagePreview").attr('src', newSrc);
+                                        $('#imagePreview').css("background-image", "url('profilepics/'"+p.SERVERFILE +")");
+                                   }
+                              });
+                    }
+               }
+               
+               $("#imageUpload").change(function(e)
+               {
+                    e.preventDefault();
+                    readURL(this);
+               });
+     }); 
+
+             
+     $(document).ready(function () {
+          window.setTimeout(function() {
+              $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+                  $(this).remove(); 
+              });
+          }, 1500);
+           
+          });
 
 /*
 function PrintDocument() {
