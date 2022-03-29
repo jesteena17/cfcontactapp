@@ -42,7 +42,7 @@
           <cfif  NOT reFindNoCase("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$",variables.email )>
                <cfset variables.error2 = variables.error2 & "Enter a valid  emailid">
           </cfif>
-           <cfif  NOT reFindNoCase("^[a-z0-9]+$",variables.uname )>
+           <cfif   (variables.uname EQ "" OR variables.uname EQ " " )>
                <cfset variables.error3 = variables.error3 & "Enter A valid  username">
           </cfif>
            <cfif  NOT reFindNoCase("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[##?!@$%^&*-]).{5,}$",variables.pword )>
@@ -117,6 +117,70 @@
           </cfif>
           <cfreturn variables.isUserLoggedIn> 
      </cffunction>
+     <cffunction name="validatecontactform"  access="public" returnType="struct"  output="false">
+          <cfset variables.result=StructNew()/>
+          <cfset variables.title = trim(form.title)>
+          <cfset variables.firstname = trim(form.firstname)>
+          <cfset variables.lastname = trim(form.lastname)>
+          <cfset variables.gender = trim(form.gender)>
+          <cfset variables.dob = trim(form.dob)>
+           <cfset variables.email = trim(form.email)>
+          <cfset variables.phone = trim(form.phone)>
+          <cfset variables.address = trim(form.address)>
+          <cfset variables.street = trim(form.street)>
+          <cfset variables.pincode = trim(form.pincode)>
+          <cfset variables.error1 = "">
+          <cfset variables.error2 = "">
+          <cfset variables.error3 = "">
+          <cfset variables.error4 = "">
+          <cfset variables.error5 = "">
+          <cfset variables.error6 = "">
+          <cfset variables.error7 = "">
+          <cfset variables.error8 = "">
+          <cfset variables.error9 = "">
+          <cfset variables.error10 = "">
+          <cfif  variables.title EQ "" >
+               <cfset variables.error1 = variables.error1 & "Select a Title *">
+          </cfif>
+          <cfif  (NOT reFindNoCase("^[A-Z]*$",variables.firstname )) OR (variables.firstname EQ " ") >
+               <cfset variables.error2 = variables.error2 & "Enter a valid Firstname *">
+          </cfif>
+          <cfif  (NOT reFindNoCase("^[A-Z]*$",variables.lastname )) OR (variables.lastname EQ " ")>
+               <cfset variables.error3 = variables.error3 & "Enter a valid Lastname *">
+          </cfif>
+          <cfif  (variables.gender EQ "" )>
+               <cfset variables.error4 = variables.error4 & "Select a Gender *">
+          </cfif>
+          <cfif  (variables.dob EQ "" OR variables.dob EQ "dd/mm/yyyy" )>
+               <cfset variables.error5 = variables.error5 & "Select a Date *">
+          </cfif>
+          <cfif  NOT reFindNoCase("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$",variables.email )>
+               <cfset variables.error6 = variables.error6 & "Enter a valid  Emailid *">
+          </cfif>
+          <cfif (variables.phone EQ "" OR  variables.phone EQ " " )>
+               <cfset variables.error7 = variables.error7 & "Enter a valid Phone *">
+          </cfif>
+           <cfif   (variables.address EQ "" OR variables.address EQ " " )>
+               <cfset variables.error8 = variables.error8 & "Enter A valid  Address *">
+          </cfif>
+           <cfif   (variables.street EQ "" OR variables.street EQ " " )>
+               <cfset variables.error9 = variables.error9 & "Enter A valid  Street *">
+          </cfif>
+           <cfif  (variables.pincode EQ "" OR variables.pincode EQ " ")>
+               <cfset variables.error10 = variables.error10 & "Enter a valid Pincode *">
+          </cfif>
+          <cfset StructInsert(variables.result, "error1",variables.error1 )/>
+          <cfset StructInsert(variables.result, "error2",variables.error2 )/>
+          <cfset StructInsert(variables.result, "error3",variables.error3 )/>
+          <cfset StructInsert(variables.result, "error4",variables.error4 )/>
+          <cfset StructInsert(variables.result, "error5",variables.error5 )/>
+          <cfset StructInsert(variables.result, "error6",variables.error6 )/>
+          <cfset StructInsert(variables.result, "error7",variables.error7 )/>
+          <cfset StructInsert(variables.result, "error8",variables.error8 )/>
+          <cfset StructInsert(variables.result, "error9",variables.error9 )/>
+          <cfset StructInsert(variables.result, "error10",variables.error10 )/>
+          <cfreturn variables.result>
+     </cffunction>  
      <cffunction name = "storecontactinfo" returnType = "any"  access = "public">
           <cfargument name="title" required="true"/>
           <cfargument name="firstname" required="true"/>
@@ -152,7 +216,7 @@
      </cffunction> 
     <cffunction name="displayalldata" access="public" returnType="any" output="true">  
           <cfargument name="usersid" required="true">    
-          <cfset variables.getcontacts = EntityLoad('Contacts',{},'added_at desc')>
+          <cfset variables.getcontacts = EntityLoad('Contacts',{userid=arguments.usersid},'added_at desc')>
           <cfreturn variables.getcontacts>    
      </cffunction>
      <cffunction name="displayalldataforreport" access="public" returnType="query" output="false">      
@@ -164,6 +228,12 @@
      </cffunction>
      <cffunction name="deletecontact" access="public" returnType="string"  output="false">
           <cfargument name="cid" required="true">
+          <cfquery name = "local.dltcontactimg"    result="deleteimgresults">
+               select photo from  contacts where cid=<cfqueryparam value="#arguments.cid#" cfsqltype="cf_sql_integer">
+          </cfquery>
+           <cfset variables.thisPath=expandPath('.') & '/contactimgs/'>
+          <cfset variables.f_dir=GetDirectoryFromPath(variables.thisPath)>
+           <cffile action="delete" file="#variables.f_dir#/#dltcontactimg.photo#">
           <cfquery name = "local.dltcontact"    result="deleteresults">
                delete from  contacts where cid=<cfqueryparam value="#arguments.cid#" cfsqltype="cf_sql_integer">
           </cfquery>
@@ -179,7 +249,7 @@
      </cffunction>
      <cffunction name="updatecontact" access="public" returnType="string"  output="false">
           <cfargument name="contid" required="true">
-           <cfargument name="title" required="true"/>
+          <cfargument name="title" required="true"/>
           <cfargument name="firstname" required="true"/>
           <cfargument name="lastname" required="true"/>
           <cfargument name="gender" required="true"/>
@@ -207,7 +277,7 @@
           </cfquery>
           <cfset variables.getNumberOfRecords = listLen(myupdateResult.RecordCount)> 
           <cfreturn variables.getNumberOfRecords>    
-     </cffunction>  
+     </cffunction> 
      <cffunction name = "updateprofilepic"  access="remote" returnType="any" returnFormat="JSON">
           <cfargument name="photo"  required="true"/>
           <cfargument name="uid" required="true"/>
@@ -215,11 +285,12 @@
                                          'image/jpeg': {extension: 'jpg'}
                                     ,'image/png': {extension: 'png'}
                                              } />
-          <cfset variables.thisPath=expandPath('.') & '/profilepics/'>
-          <cfset variables.f_dir=GetDirectoryFromPath(variables.thisPath)>
+                <cfset variables.thisPath=expandPath('..') & '/profilepics/' />
+          <cfset variables.f_dir=GetDirectoryFromPath(variables.thisPath) />
+  
           <cftry>
                <cffile action="upload" filefield="imageUpload" destination="#variables.f_dir#" mode="777"
-                    accept="#StructKeyList(variables.validMimeTypes)#" strict="true" result="uploadResult"
+                     result="uploadResult"
                     nameconflict="makeunique">
                <cfquery name = "local.uppcontact"  result="mypupdateResult">
                     update register
@@ -237,10 +308,18 @@
                     <cfelse>
                          <cfabort showerror="Unhandled File Upload Error">
                     </cfif>
+                    
                </cfcatch>
           </cftry>
           <cfreturn uploadResult>
      </cffunction>   
+      <cffunction name="displayreguserdata" access="remote" returnType="any" returnFormat="JSON" output="false">
+          <cfargument name="registerid" required="true">
+          <cfquery name = "local.getdetailsbyid"    >
+               select *  from register where regid=<cfqueryparam value="#arguments.registerid#"  cfsqltype="cf_sql_integer">      
+          </cfquery>
+          <cfreturn getdetailsbyid> 
+     </cffunction>
 </cfcomponent>
 
 

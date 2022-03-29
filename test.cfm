@@ -152,7 +152,7 @@
                                              </div>
                                              <div class="col-md-3" >
                                                   <div class="mrsp">
-                                                       <img src="images/avt1.png" width="150" height="130" />
+                                                       <img src="images/noimage.png" width="150" height="130" />
                                                   </div>
                                              </div>
                                         </div>
@@ -436,3 +436,77 @@ https://community.adobe.com/t5/coldfusion-discussions/create-pdf-and-force-downl
 
 book
                https://books.google.co.in/books?id=uHDcvqdaj58C&pg=PA311&lpg=PA311&dq=Redirect+coldfusion+page+after+a+timeout&source=bl&ots=991LAnKW6n&sig=ACfU3U1RZeBP8SsW_Gr2Fqogjlnnl1UEvQ&hl=en&sa=X&ved=2ahUKEwiH88LU6ej2AhWXR2wGHdwqBVIQ6AF6BAgSEAM#v=snippet&q=logout&f=false
+
+
+
+
+
+
+<cfif (structKeyExists(form, "subcontact"))> 
+    <cfif form.updatedata NEQ "">
+          <cfset variables.filefield="#form.oldphoto#"/>
+          <cfif form.FiletoUpload NEQ "">
+               <cfinvoke component="components.backend" method="uploadfile" returnvariable="fileresult"></cfinvoke>
+               <cfif fileresult.serverFile EQ "">
+                    <cfset variables.filefield="#form.oldphoto#"/>
+               <cfelse>
+                    <cfset variables.filefield=fileresult.serverFile/>
+               </cfif>
+          </cfif> 
+          <cfdump var="#variables.filefield#">
+          <cfinvoke component="components.backend" method="updatecontact" returnvariable="result">
+               <cfinvokeargument name="title" value="#form.title#" />
+               <cfinvokeargument name="firstname" value="#form.firstname#" />
+               <cfinvokeargument name="lastname" value="#form.lastname#" />
+               <cfinvokeargument name="gender" value="#form.gender#" />
+               <cfinvokeargument name="dob" value="#form.dob#" />
+               <cfinvokeargument name="email" value="#form.email#" />
+               <cfinvokeargument name="phone" value="#form.phone#" />
+               <cfinvokeargument name="photo" value="#variables.filefield#" />
+               <cfinvokeargument name="address" value="#form.address#" />
+               <cfinvokeargument name="street" value="#form.street#" />
+               <cfinvokeargument name="pincode" value="#form.pincode#" /> 
+               <cfinvokeargument name="contid" value="#form.updatedata#"/>  
+          </cfinvoke>
+          <cfif result GT 0>
+               <cflocation url="home.cfm" addtoken="no">
+          </cfif>
+    <cfelse>
+          <cfinvoke component="components.backend" method="validatecontactform" returnvariable="valconresult"></cfinvoke>
+          
+          <cfif refind(':("[^"]+"|\d+|true|false)', serializeJSON(valconresult)) EQ 0>
+               <cfset variables.filefield="noimage.png"/>
+               <cfif form.FiletoUpload NEQ "">
+                    <cfinvoke component="components.backend" method="uploadfile" returnvariable="fileresult"></cfinvoke>
+                    <cfif fileresult.serverFile EQ "">
+                         <cfset variables.filefield="noimage.png"/>
+                    <cfelse>
+                         <cfset variables.filefield=fileresult.serverFile/>
+                    </cfif>
+               </cfif> 
+               <cfinvoke component="components.backend" method="storecontactinfo" returnvariable="result">
+                    <cfinvokeargument name="title" value="#form.title#" />
+                    <cfinvokeargument name="firstname" value="#form.firstname#" />
+                    <cfinvokeargument name="lastname" value="#form.lastname#" />
+                    <cfinvokeargument name="gender" value="#form.gender#" />
+                    <cfinvokeargument name="dob" value="#form.dob#" />
+                    <cfinvokeargument name="email" value="#form.email#" />
+                    <cfinvokeargument name="phone" value="#form.phone#" />
+                    <cfinvokeargument name="photo" value="#variables.filefield#" />
+                    <cfinvokeargument name="address" value="#form.address#" />
+                    <cfinvokeargument name="street" value="#form.street#" />
+                    <cfinvokeargument name="pincode" value="#form.pincode#" />
+                    <cfinvokeargument name="userid" value="#form.user_id#" />
+               </cfinvoke>
+               <cfif result GT 0>
+                   <!-- <cflocation url="home.cfm" addtoken="no">-->
+               </cfif>
+          </cfif>
+         
+     </cfif>
+</cfif>
+
+
+
+                        
+
