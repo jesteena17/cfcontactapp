@@ -222,7 +222,7 @@
      <cffunction name="displayalldataforreport" access="public" returnType="query" output="false">      
           <cfquery name = "local.getallcontacts" >
                select c.*,r.fullname  from contacts c join register r on
-               (r.regid=c.userid) order by c.added_at desc;
+               (r.regid=c.userid) where c.userid=#session.stLoggedInUser.userID# order by c.added_at desc;
           </cfquery>
           <cfreturn getallcontacts>    
      </cffunction>

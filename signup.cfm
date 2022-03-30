@@ -40,7 +40,6 @@
                                              </cfif>
                                              </cfif>
                                         </cfif>
-                                   
                                         <form action="" id="signupForm" method="post" >
                                              <div class="form-group pb-3">
                                                   <input type="text" name="fullname" id="fullname" value="#form.fullname#" placeholder="Fullname" class="form-control-sm w-100"
@@ -91,7 +90,6 @@
                                                        class="btn btn-outline-primary w-100 font-weight-bold mt-2 form-control-lg" id="regbtn" value="Sign Up" name="regsubmit"/>
                                              </div>
                                         </form>  
-                                             
                                         <div class="pt-4 text-center">
                                              Already have an account? <a href="signin.cfm">Sign in</a>
                                         </div>
