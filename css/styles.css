@@ -283,3 +283,7 @@ table {
 .clrblk {
      color: black !important;
 }
+.mytable td {
+     vertical-align: middle !important;
+     text-align: center;
+}

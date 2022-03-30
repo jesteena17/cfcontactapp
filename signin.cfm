@@ -32,8 +32,6 @@
                                                             <!--</cfif>-->
                                                        <cfelse>
                                                             <cfset variables.errormsg="invalid username or password">
-                                                            <cfset StructDelete(Session, "stLoggedInUser")/>
-                                                            <cfset  StructClear(Session) />
                                                        </cfif> 
                                              </cfif>
                                         </cfif>

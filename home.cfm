@@ -10,11 +10,11 @@
                <cfinvoke component="components.backend" method="validatecontactform" returnvariable="valconresult"></cfinvoke>
                <cfif refind(':("[^"]+"|\d+|true|false)', serializeJSON(valconresult)) EQ 0>  
                     <cfif form.updatedata NEQ "">
-                         <cfset variables.filefield="#form.oldphoto#"/>
+                         <cfset variables.filefield=form.oldphoto/>
                          <cfif form.FiletoUpload NEQ "">
                               <cfinvoke component="components.backend" method="uploadfile" returnvariable="fileresult"></cfinvoke>
                               <cfif fileresult.serverFile EQ "">
-                                   <cfset variables.filefield="#form.oldphoto#"/>
+                                   <cfset variables.filefield=form.oldphoto/>
                               <cfelse>
                                    <cfset variables.filefield=fileresult.serverFile/>
                               </cfif>
@@ -34,8 +34,9 @@
                               <cfinvokeargument name="contid" value="#form.updatedata#"/>  
                          </cfinvoke>
                          <cfif result GT 0>
-                              <cfset variables.message="Data Updated Successfully"/>
-                              <cflocation url="home.cfm" addtoken="no">
+                              <script>
+                                   alert("Data Updated");
+                              </script>
                          </cfif>
                     <cfelse>
                          <cfset variables.filefield="noimage.png"/>
@@ -62,8 +63,9 @@
                               <cfinvokeargument name="userid" value="#form.user_id#" />
                          </cfinvoke>
                          <cfif result GT 0>
-                         <cfset variables.message="Data Saved Successfully"/>
-                         <cflocation url="home.cfm" addtoken="no">
+                              <script>
+                                   alert("Data Saved");
+                              </script>
                          </cfif>
                     </cfif>
                <cfelse>
@@ -131,7 +133,7 @@
                                         </cfif>
                                         <div class="card">
                                              <div class="card-body">
-                                                  <table width="100%" class="table table-responsive" >
+                                                  <table width="100%" class="table table-responsive mytable" >
                                                        <tr class="txtcolr">
                                                             <th >PHOTO</th>
                                                             <th >NAME</th>
@@ -187,7 +189,6 @@
                               <cfparam name="form.address" default="tvm">
                               <cfparam name="form.street" default="kvtm"> 
                               <cfparam name="form.pincode" default="111111"> 
-                             
                               <div class="col-md-12 col-xs-12 createcls">
                                    <div class="row">
                                         <div class="col-md-9 bgwhites formstyle1 pt-3 pl-5 pr-5 pb-3 ht">
