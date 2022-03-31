@@ -287,3 +287,13 @@ table {
      vertical-align: middle !important;
      text-align: center;
 }
+.mytable tbody {
+     width: 100% !important;
+     display: table !important;
+}
+.myalert {
+     margin-bottom: 0rem !important;
+}
+.mycardbody {
+     padding: 0.25rem !important;
+}
