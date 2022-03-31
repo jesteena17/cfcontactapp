@@ -130,14 +130,14 @@ $().ready(function() {
  // $('#exampleModal').on('hidden.bs.modal', function (event) {
  //      alert("ji");
  // })
+ //var validator = $( "#myform" ).validate();
+ //validator.resetForm();
+ 
  $(document).on('hide.bs.modal', '#exampleModal', function() {
      var validator = $("#addcontactform").validate();
       validator.resetForm();
       $('form#addcontactform').trigger("reset");
  });
- //var validator = $( "#myform" ).validate();
- //validator.resetForm();
- 
 
  $(document).on('click', '.editbtn', function() {
      $("#modheading").html("EDIT CONTACT");
@@ -184,6 +184,7 @@ $().ready(function() {
          }
      });
  });
+
  $(document).on('click', '.viewbtn', function() {
      var _contactid = $(this).data('conid');
      $.ajax({
@@ -219,6 +220,7 @@ $().ready(function() {
          }
      });
  });
+ 
 $(document).ready(function () {
      var _contactid = $("#updatedata").val();
     
@@ -286,6 +288,79 @@ $(document).ready(function () {
      }, 1500);
  
  });
+
+     
+          $(document).on("blur","#emailid",function() {
+          
+          var email = $('#emailid').val();
+          if (email == '') {
+               email_state = false;
+               return;
+          }
+          $.ajax({
+               url: 'components/backend.cfc?method=checkUsername',
+               type: 'post',
+               data: {
+                    'userinput': email,
+                    'userinputtype': 'em'
+               },
+               success: function (response) {
+                    console.log(response);
+                    if (response == "true") {
+                         email_state = false;
+                         $('#emailid').parent().removeClass();
+                         $('#emailid').parent().addClass("form_error");
+                         $('#emailid').siblings("span").text('Sorry... Email already taken');
+                         $("#regbtn").attr("disabled", true);
+                    } else if (response == "false") {
+                         email_state = true;
+                         $("#regbtn").removeAttr("disabled");
+                         $('#emailid').parent().removeClass();
+                         $('#emailid').parent().addClass("form_success");
+                         $('#emailid').siblings("span").text('Email available');
+                    }
+               }
+          });
+     });
+
+   
+          $(document).on("blur","#username",function() {
+          
+          var username = $('#username').val();
+          if (username == '') {
+               username_state = false;
+               return;
+          }
+          $.ajax({
+               url: 'components/backend.cfc?method=checkUsername',
+               type: 'post',
+               data: {
+                    'userinput': username,
+                    'userinputtype': 'un'
+               },
+               success: function (response) {
+                    if (response == 'true') {
+                         username_state = false;
+
+                         $('#username').parent().removeClass();
+                         $('#username').parent().addClass("form_error");
+                         $('#username').siblings("span").text('Sorry... Username already taken');
+                         $("#regbtn").attr("disabled", true);
+                    } else if (response == 'false') {
+                         username_state = true;
+                         $("#regbtn").removeAttr("disabled");
+                         $('#username').parent().removeClass();
+                         $('#username').parent().addClass("form_success");
+                         $('#username').siblings("span").text('Username available');
+
+                    }
+               }
+          });
+     });
+    
+
+
+
  
  /*
  function PrintDocument() {
@@ -311,3 +386,7 @@ $(document).ready(function () {
           
        }   
        */
+
+
+
+

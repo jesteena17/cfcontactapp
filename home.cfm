@@ -131,8 +131,7 @@
 									     </div>
                                              </div>
                                         </div>
-                                   </div>
-                                  
+                                   </div> 
                                    <div class="col-md-9 col-xs-9">
                                         <cfif IsDefined("message") and not variables.message EQ "">
                                         <div class="col-md-12 alert alert-success alert1">
