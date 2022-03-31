@@ -144,7 +144,11 @@
                                                        <cfloop array="#allcontacts#" item="allcontacts">
                                                             <tr>
                                                                  <td>
-                                                                 <img src="./contactimgs/#allcontacts.getPhoto()#" class="img-fluid" width="100" height="100"/>
+                                                                      <cfif allcontacts.getPhoto() EQ "noimage.png">
+                                                                           <img src="./images/#allcontacts.getPhoto()#" class="img-fluid" width="100" height="100"/>
+                                                                      <cfelse>
+                                                                           <img src="./contactimgs/#allcontacts.getPhoto()#" class="img-fluid" width="100" height="100"/>
+                                                                      </cfif>
                                                                  </td>
                                                                  <td>#allcontacts.getTitle()&'.'&allcontacts.getFirstname()&' '&allcontacts.getLastname()#</td>
                                                                  <td>#allcontacts.getEmail()#</td>
@@ -178,17 +182,17 @@
                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered  modal-lg">
                          <div class="modal-content ml-3 ht">
-                              <cfparam name="form.firstname" default="jes">
-                              <cfparam name="form.lastname" default="bab">
-                              <cfparam name="form.title" default="Ms">
-                              <cfparam name="form.gender" default="Male">
-                              <cfparam name="form.dob" default="1993-05-17">
-                              <cfparam name="form.email" default="jes@gmail.com">
-                              <cfparam name="form.phone" default="1111111111">
+                              <cfparam name="form.firstname" default="">
+                              <cfparam name="form.lastname" default="">
+                              <cfparam name="form.title" default="">
+                              <cfparam name="form.gender" default="">
+                              <cfparam name="form.dob" default="">
+                              <cfparam name="form.email" default="">
+                              <cfparam name="form.phone" default="">
                               <cfparam name="form.FiletoUpload" default="">
-                              <cfparam name="form.address" default="tvm">
-                              <cfparam name="form.street" default="kvtm"> 
-                              <cfparam name="form.pincode" default="111111"> 
+                              <cfparam name="form.address" default="">
+                              <cfparam name="form.street" default=""> 
+                              <cfparam name="form.pincode" default=""> 
                               <div class="col-md-12 col-xs-12 createcls">
                                    <div class="row">
                                         <div class="col-md-9 bgwhites formstyle1 pt-3 pl-5 pr-5 pb-3 ht">
@@ -207,9 +211,9 @@
                                                                       <label class="colr1" id="titlelab" for="title">Title *</label><br>
                                                                       <select name="title" class="addfiledsel" id="title">
                                                                            <option value=""></option>
-                                                                           <option value="Mr" #form.title == 'Mr' ? 'selected="selected"' : ''#>Mr.</option>
-                                                                           <option value="Mrs"  #form.title == 'Mrs' ? 'selected="selected"' : ''#>Mrs.</option>
-                                                                           <option value="Ms"  #form.title == 'Ms' ? 'selected="selected"' : ''#>Ms.</option>
+                                                                           <option value="Mr">Mr.</option>
+                                                                           <option value="Mrs">Mrs.</option>
+                                                                           <option value="Ms">Ms.</option>
                                                                       </select>
                                                                       <cfif isDefined("valconresult.error1")>
                                                                       <p align="left">
@@ -221,7 +225,7 @@
                                                             <div class="col-sm-4">
                                                                  <div class="form-group">
                                                                       <label class="colr1" for="form_email">Firstname *</label>
-                                                                      <input id="firstname" type="text" value="#form.firstname#" name="firstname" class="form-control addfileds" placeholder="Your Firstname">
+                                                                      <input id="firstname" type="text"  name="firstname" class="form-control addfileds" placeholder="Your Firstname">
                                                                       <cfif isDefined("valconresult.error2")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error2#</span></b>
@@ -232,7 +236,7 @@
                                                             <div class="col-sm-4">
                                                                  <div class="form-group">
                                                                       <label class="colr1" for="form_phone">Lastname *</label>
-                                                                      <input id="lastname" type="text" name="lastname" value="#form.lastname#" class="form-control addfileds" placeholder="Your Lastname">
+                                                                      <input id="lastname" type="text" name="lastname"  class="form-control addfileds" placeholder="Your Lastname">
                                                                       <cfif isDefined("valconresult.error3")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error3#</span></b>
@@ -249,8 +253,8 @@
                                                                  <label class="colr1" for="form_phone">Gender *</label><br>
                                                                  <select name="gender" id="gender" class="addfiledsel" >
                                                                       <option value=""></option>
-                                                                      <option value="Male"  #form.gender == 'Male' ? 'selected="selected"' : ''#>Male</option>
-                                                                      <option value="Female" #form.gender == 'Female' ? 'selected="selected"' : ''#>Female</option>
+                                                                      <option value="Male"  >Male</option>
+                                                                      <option value="Female" >Female</option>
                                                                  </select>
                                                                  <cfif isDefined("valconresult.error4")>
                                                                       <p align="left">
@@ -262,7 +266,7 @@
                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Date Of Birth *</label>
-                                                                 <input id="dob" type="date" value="#form.dob#" name="dob" class="form-control addfileds" >
+                                                                 <input id="dob" type="date"  name="dob" class="form-control addfileds" >
                                                                  <cfif isDefined("valconresult.error5")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error5#</span></b>
@@ -276,7 +280,7 @@
                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Email *</label><br>
-                                                                 <input id="email" type="email" value="#form.email#"  name="email" class="form-control addfileds" placeholder="Your Email">
+                                                                 <input id="email" type="email"  name="email" class="form-control addfileds" placeholder="Your Email">
                                                                  <cfif isDefined("valconresult.error6")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error6#</span></b>
@@ -287,7 +291,7 @@
                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Phone *</label>
-                                                                 <input id="phone" type="tel" name="phone" value="#form.phone#" class="form-control addfileds" placeholder="Your Phone" >
+                                                                 <input id="phone" type="tel" name="phone" class="form-control addfileds" placeholder="Your Phone" >
                                                                  <cfif isDefined("valconresult.error")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error7#</span></b>
@@ -314,7 +318,7 @@
                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone">Address *</label>
-                                                                 <input id="address" type="text" name="address" value="#form.address#" class="form-control addfileds" placeholder="Your Address">
+                                                                 <input id="address" type="text" name="address"  class="form-control addfileds" placeholder="Your Address">
                                                                  <cfif isDefined("valconresult.error8")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error8#</span></b>
@@ -325,7 +329,7 @@
                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone"> Street *</label>
-                                                                 <input id="street" type="text" name="street" value="#form.street#" class="form-control addfileds" placeholder="Your Street">
+                                                                 <input id="street" type="text" name="street"  class="form-control addfileds" placeholder="Your Street">
                                                                  <cfif isDefined("valconresult.error9")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error9#</span></b>
@@ -336,7 +340,7 @@
                                                        <div class="col-md-4">
                                                             <div class="form-group">
                                                                  <label class="colr1" for="form_phone"> Pincode *</label>
-                                                                 <input id="pincode" type="text" name="pincode" value="#form.pincode#" class="form-control addfileds" placeholder="Your Pincode">
+                                                                 <input id="pincode" type="text" name="pincode"  class="form-control addfileds" placeholder="Your Pincode">
                                                                  <cfif isDefined("valconresult.error10")>
                                                                       <p align="left">
                                                                            <span class="sserrors">#valconresult.error10#</span></b>
