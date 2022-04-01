@@ -40,7 +40,7 @@
                                              </cfif>
                                              </cfif>
                                         </cfif>
-                                        <form action="" id="signupForm" method="post" >
+                                        <form action="" id="signupForm" method="post"  autocomplete="off">
                                              <div class="form-group pb-3">
                                                   <input type="text" name="fullname" id="fullname" value="#form.fullname#" placeholder="Fullname" class="form-control-sm w-100"
                                                        aria-describedby="emailHelp">
@@ -53,20 +53,24 @@
                                              <div class="form-group pb-3">
                                                   <input type="email"  name="emailid" id="emailid" value="#form.emailid#" placeholder="EmailID" class="form-control-sm w-100"
                                                        aria-describedby="emailHelp">
+                                                       <span></span>
                                                   <cfif isDefined("valresult.error1")>
                                                        <p align="left">
                                                             <span class="sserrors">#valresult.error2#</span></b>
                                                        </p>
                                                   </cfif>
+
                                              </div>                                     
                                              <div class="form-group pb-3">
                                                   <input type="text" name="username" id="username" value="#form.username#" placeholder="Username" class="form-control-sm w-100"
                                                        aria-describedby="emailHelp">
+                                                       <span></span>
                                                   <cfif isDefined("valresult.error1")>
                                                        <p align="left">
                                                             <span class="sserrors">#valresult.error3#</span></b>
                                                        </p>
                                                   </cfif>
+                                                  
                                              </div>
                                              <div class="form-group pb-3">
                                                   <input type="password" name="origpassword" id="origpassword" value="#form.origpassword#" placeholder="Password" class="form-control-sm w-100">

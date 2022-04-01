@@ -320,6 +320,30 @@
           </cfquery>
           <cfreturn getdetailsbyid> 
      </cffunction>
+     
+    <cffunction name="checkUsername" access="remote" returnType="string" returnformat="plain" output="true">
+          <cfargument name="userinput" required="true">
+          <cfargument name="userinputtype" required="true">
+          <cfset variables.returnStg="">
+          <cfif arguments.userinputtype EQ "un">
+               <cfquery name="validateUsername"   result="tmpResult">
+                    SELECT username FROM register 
+                    WHERE username=<cfqueryparam value="#arguments.userinput#" cfsqltype="cf_sql_varchar">;
+               </cfquery>
+          <cfelseif arguments.userinputtype EQ "em">
+               <cfquery name="validateemail"   result="tmpResult">
+                    SELECT emailid FROM register 
+                    WHERE emailid=<cfqueryparam value="#arguments.userinput#" cfsqltype="cf_sql_varchar">;
+               </cfquery>
+          </cfif>
+          <cfif tmpResult.RecordCount GTE 1>
+               <cfset variables.returnStg="true">
+          <cfelse>
+               <cfset variables.returnStg="false">
+          </cfif>
+          <cfreturn variables.returnStg>
+    </cffunction>
+
 </cfcomponent>
 
 
