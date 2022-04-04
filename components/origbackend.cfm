@@ -4,7 +4,7 @@
                                          'image/jpeg': {extension: 'jpg'}
                                     ,'image/png': {extension: 'png'}
                                              } />
-          <cfset variables.thisPath=expandPath('..') & '/contactimgs/'>
+          <cfset variables.thisPath=expandPath('.') & '/contactimgs/'>
           <cfset variables.f_dir=GetDirectoryFromPath(variables.thisPath)>
           <cftry>
                <cffile action="upload" filefield="FiletoUpload" destination="#variables.f_dir#" mode="777"
@@ -18,7 +18,7 @@
                     <cfelseif FindNoCase( "did not contain a file." , cfcatch.message )>
                          <cfabort showerror="Empty form field">
                     <cfelse>
-                         <cfabort showerror=cfcatch.message>
+                         <cfabort showerror="Unhandled File Upload Error">
                     </cfif>
                </cfcatch>
           </cftry>
@@ -138,7 +138,7 @@
           <cfset variables.error7 = "">
           <cfset variables.error8 = "">
           <cfset variables.error9 = "">
-          <cfset variables.error10 = "demoerr">
+          <cfset variables.error10 = "">
           <cfif  variables.title EQ "" >
                <cfset variables.error1 = variables.error1 & "Select a Title *">
           </cfif>
@@ -181,7 +181,39 @@
           <cfset StructInsert(variables.result, "error10",variables.error10 )/>
           <cfreturn variables.result>
      </cffunction>  
- 
+     <cffunction name = "storecontactinfo" returnType = "any"  access = "public">
+          <cfargument name="title" required="true"/>
+          <cfargument name="firstname" required="true"/>
+          <cfargument name="lastname" required="true"/>
+          <cfargument name="gender" required="true"/>
+          <cfargument name="dob" required="true"/>
+          <cfargument name="email"  required="true"/>
+          <cfargument name="phone" required="true"/>
+          <cfargument name="photo"  />
+          <cfargument name="address"  required="true"/>
+          <cfargument name="street" required="true"/>
+          <cfargument name="pincode" required="true"/>
+          <cfargument name="userid" required="true"/>
+          <cfquery name = "addcontact"  result="myaddResult">
+               insert into contacts(title,firstname,lastname,gender,birthday,email,mobile,address,street,photo,pincode,userid) 
+               values (   
+                         <cfqueryparam value = "#arguments.title#" cfsqltype = "cf_sql_varchar">,
+                         <cfqueryparam value = "#arguments.firstname#" cfsqltype ="cf_sql_varchar">,
+                         <cfqueryparam value = "#arguments.lastname#" cfsqltype = "cf_sql_varchar">,
+                         <cfqueryparam value = "#arguments.gender#" cfsqltype = "cf_sql_varchar"/>,
+                         <cfqueryparam value = "#arguments.dob#" cfsqltype = "cf_sql_date"/>,
+                         <cfqueryparam value ="#arguments.email#" cfsqltype = "cf_sql_varchar"/>,
+                         <cfqueryparam value = "#arguments.phone#" cfsqltype = "cf_sql_varchar">,
+                         <cfqueryparam value ="#arguments.address#" cfsqltype = "cf_sql_varchar"/>,
+                         <cfqueryparam value = "#arguments.street#" cfsqltype = "cf_sql_varchar">,
+                         <cfqueryparam value = "#arguments.photo#" cfsqltype = "cf_sql_varchar"/>,
+                         <cfqueryparam value = "#arguments.pincode#" cfsqltype = "cf_sql_varchar"/>,
+                         <cfqueryparam value = "#arguments.userid#" cfsqltype = "cf_sql_integer"/>
+                    );
+          </cfquery>
+          <cfset variables.getNumberOfRecords = listLen(myaddResult.generated_key)>
+          <cfreturn variables.getNumberOfRecords>
+     </cffunction> 
     <cffunction name="displayalldata" access="public" returnType="any" output="true">  
           <cfargument name="usersid" required="true">    
           <cfset variables.getcontacts = EntityLoad('Contacts',{userid=arguments.usersid},'added_at desc')>
@@ -199,7 +231,7 @@
           <cfquery name = "local.dltcontactimg"    result="deleteimgresults">
                select photo from  contacts where cid=<cfqueryparam value="#arguments.cid#" cfsqltype="cf_sql_integer">
           </cfquery>
-           <cfset variables.thisPath=expandPath('..') & '/contactimgs/'>
+           <cfset variables.thisPath=expandPath('.') & '/contactimgs/'>
           <cfset variables.f_dir=GetDirectoryFromPath(variables.thisPath)>
            <cffile action="delete" file="#variables.f_dir#/#dltcontactimg.photo#">
           <cfquery name = "local.dltcontact"    result="deleteresults">
@@ -215,7 +247,37 @@
           </cfquery>
           <cfreturn getcontactbyid> 
      </cffunction>
-    
+     <cffunction name="updatecontact" access="public" returnType="string"  output="false">
+          <cfargument name="contid" required="true">
+          <cfargument name="title" required="true"/>
+          <cfargument name="firstname" required="true"/>
+          <cfargument name="lastname" required="true"/>
+          <cfargument name="gender" required="true"/>
+          <cfargument name="dob" required="true"/>
+          <cfargument name="email"  required="true"/>
+          <cfargument name="phone" required="true"/>
+          <cfargument name="photo"  required="true"/>
+          <cfargument name="address"  required="true"/>
+          <cfargument name="street" required="true"/>
+          <cfargument name="pincode" required="true"/>
+          <cfquery name = "upcontact"  result="myupdateResult">
+               update contacts
+               set  title= <cfqueryparam value = "#arguments.title#" cfsqltype = "cf_sql_varchar">,
+               firstname=    <cfqueryparam value = "#arguments.firstname#" cfsqltype ="cf_sql_varchar">,
+               lastname= <cfqueryparam value = "#arguments.lastname#" cfsqltype = "cf_sql_varchar">,
+               gender=<cfqueryparam value = "#arguments.gender#" cfsqltype = "cf_sql_varchar"/>,
+               birthday= <cfqueryparam value = "#arguments.dob#" cfsqltype = "cf_sql_date"/>,
+               email=<cfqueryparam value ="#arguments.email#" cfsqltype = "cf_sql_varchar"/>,
+               mobile=<cfqueryparam value = "#arguments.phone#" cfsqltype = "cf_sql_varchar">,
+               address=<cfqueryparam value ="#arguments.address#" cfsqltype = "cf_sql_varchar"/>,
+               street=<cfqueryparam value = "#arguments.street#" cfsqltype = "cf_sql_varchar">,
+               photo=<cfqueryparam value = "#arguments.photo#" cfsqltype = "cf_sql_varchar"/>,
+               pincode=<cfqueryparam value = "#arguments.pincode#" cfsqltype = "cf_sql_varchar"/>
+               where cid= <cfqueryparam value = "#arguments.contid#" cfsqltype = "cf_sql_integer" >
+          </cfquery>
+          <cfset variables.getNumberOfRecords = listLen(myupdateResult.RecordCount)> 
+          <cfreturn variables.getNumberOfRecords>    
+     </cffunction> 
      <cffunction name = "updateprofilepic"  access="remote" returnType="any" returnFormat="JSON">
           <cfargument name="photo"  required="true"/>
           <cfargument name="uid" required="true"/>
