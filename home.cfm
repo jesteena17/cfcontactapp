@@ -73,12 +73,14 @@
                </cfif>
           </cfif>
           <!--  end added new -->
-          <cfif session.stLoggedInUser.loggedin EQ false >
-               <cflocation URL="logout.cfm" addtoken="no">
-          </cfif>
-           <cfif isdefined("session.stLoggedInUser.loggedin") >
+         <cfif StructKeyExists(session.stLoggedInUser,"loggedin") AND session.stLoggedInUser.loggedin EQ true and  StructKeyExists(session.stLoggedInUser,"userID")>
+          
                <cfset variables.user_id=session.stLoggedInUser.userID />
+               <cfelse>
+
+               <cfset variables.user_id=0 />
           </cfif>
+
           <cfoutput>
                <cfinvoke component="components.backend" method="displayreguserdata" returnvariable="alldetails">
                     <cfinvokeargument name="registerid" value="#variables.user_id#" />
