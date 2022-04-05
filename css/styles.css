@@ -286,6 +286,7 @@ table {
 .mytable td {
      vertical-align: middle !important;
      text-align: center;
+     font-size:small !important;
 }
 .mytable tbody {
      width: 100% !important;
@@ -319,4 +320,7 @@ table {
 }
 .form_error input {
      border: 1px solid #d83d5a;
+}
+.hideme{
+     display: none ;
 }

@@ -7,6 +7,11 @@
           <cfoutput>
                <div class="container d-flex justify-content-center align-items-center">
                      <div class="col-md-7">
+                              <cfif IsDefined("session.valloginmsg") and not session.valloginmsg EQ "" >
+                                   <br><div class="col-md-12 alert alert-danger alert1 text-center">
+                                        #session.valloginmsg#
+                                   </div>
+                              </cfif>
                          <div class="row m-5 no-gutters shadow-lg logindiv">
                               <div class="col-md-4 d-none d-md-block   bg1  logindivleft">
                                    <img src="images/logo.png" width="55" height="55" />
@@ -14,45 +19,24 @@
                               <div class="col-md-8 bg-white p-3 logindivright">
                                         <h3 class="pb-1">Login Form</h3>
                                         <div class="form-style">
-                                        <cfset variables.errormsg="">
                                         <cfparam name="form.mail" default="" >
                                         <cfparam name="form.passwod" default="">
-                                        <cfif StructKeyExists(form, "loginsubmit")>
-                                             <cfinvoke component="components.backend" method="validateloginform" returnvariable="valresult"></cfinvoke>
-                                                  <cfif refind(':("[^"]+"|\d+|true|false)', serializeJSON(valresult)) EQ 0>
-                                                       <cfinvoke component="components.backend" method="login" returnvariable="result">
-                                                            <cfinvokeargument name="loginid" value="#form.loginid#"/> 
-                                                            <cfinvokeargument name="loginpassword" value="#form.loginpassword#"/> 
-                                                       </cfinvoke>
-                                                       <cfif result EQ true>                 
-                                                           <!--  <cfif session.stLoggedInUser.userrole EQ "Admin">			
-                                                                 <cflocation url="./admin/" addtoken="no"> 
-                                                            <cfelse>-->
-                                                                 <cflocation url="home.cfm" addtoken="no"> 
-                                                            <!--</cfif>-->
-                                                       <cfelse>
-                                                            <cfset variables.errormsg="invalid username or password">
-                                                       </cfif> 
-                                             </cfif>
-                                        </cfif>
-                                        
-                                        <span class="sserrors">#variables.errormsg#<span><br>
-                                        <form id="signinForm" action="" method="post">
+                                        <form id="signinForm" action="components/backend.cfc?method=login" method="post">
                                              <div class="form-group pb-3">
-                                                  <input type="text" name="loginid" id="loginid" placeholder="Email/Username" class="form-control-sm w-100"
+                                                  <input type="text" name="loginid" id="loginid" placeholder="Email/Username" value="<cfif isDefined('session.valloginudata.loginname')>#session.valloginudata.loginname#</cfif>" class="form-control-sm w-100"
                                                        id="exampleInputEmail1" aria-describedby="emailHelp">
-                                                  <cfif isDefined("valresult.error1")>
+                                                  <cfif isDefined("session.validloginresult.error1")>
                                                        <p align="left">
-                                                            <span class="sserrors">#valresult.error1#</span></b>
+                                                            <span class="sserrors">#session.validloginresult.error1#</span></b>
                                                        </p>
                                                   </cfif>
                                              </div>
                                              <div class="form-group pb-3">
-                                                  <input type="password" name="loginpassword" id="loginpassword" placeholder="Password" class="form-control-sm w-100"
+                                                  <input type="password" name="loginpassword" id="loginpassword" placeholder="Password" value="<cfif isDefined('session.valloginudata.password')>#session.valloginudata.password#</cfif>" class="form-control-sm w-100"
                                                        id="exampleInputPassword1">
-                                                  <cfif isDefined("valresult.error2")>
+                                                  <cfif isDefined("session.validloginresult.error2")>
                                                        <p align="left">
-                                                            <span class="sserrors">#valresult.error2#</span></b>
+                                                            <span class="sserrors">#session.validloginresult.error2#</span></b>
                                                        </p>
                                                   </cfif>
                                              </div>
@@ -88,7 +72,7 @@
                          </div>
                     </div>
                </div>
-          </cfoutput>     
+          </cfoutput>
      </body>
 
 </html>
