@@ -520,3 +520,123 @@ https://stackoverflow.com/questions/7649024/whats-the-most-efficient-way-to-redi
 
 
 https://www.raymondcamden.com/2007/12/05/the-complete-guide-to-adding-error-handling-to-your-coldfusion-application
+
+
+ <!-- <cfset local.currentpage = listLast(CGI.SCRIPT_NAME,"/")/>
+ <cfset local.blackList = ['main.cfm,home.cfm','printPrint.cfm','printExcel.cfm','printPDF.cfm']/>
+<cfif arrayFindNoCase(local.blackList,local.currentpage ) and  session.stLoggedInUser.loggedin eq false>
+   <cflocation  url="logout.cfm" addtoken=false>
+</cfif> -->
+
+
+<cffunction name="onMissingTemplate" returntype="Boolean" output="false">
+    <cfargument name="templateName" required="true" type="String" />
+
+    <cflocation url="logout.cfm" addtoken=false/>
+
+    <cfreturn true />
+</cffunction>
+
+
+
+     <!--  <cfinvoke component="backend" method="validatecontactform" returnvariable="valconresult"></cfinvoke>
+              
+               <cfif refind(':("[^"]+"|\d+|true|false)', serializeJSON(valconresult)) EQ 0>  -->
+                  
+
+ <!--    <cfelse>
+                    <cfset StructInsert(session, "valconresult", valconresult ,true)/>
+           <cflocation url="home.cfm" addtoken="no"/>
+            
+             
+               </cfif>
+               -->
+<cfif StructKeyExists(form, "regsubmit")>
+                                             <cfinvoke component="components.backend" method="validateregform" returnvariable="valresult"></cfinvoke>
+                                             <cfif refind(':("[^"]+"|\d+|true|false)', serializeJSON(valresult)) EQ 0>
+                                                 
+                                             </cfif>
+                                        </cfif>
+
+               https://github-wiki-see.page/m/Mach-II/Mach-II-Framework/wiki/CFC-Primer-Part-3%3A-Variable-Scopes-in-CFCs
+
+               https://stackoverflow.com/questions/8781384/is-there-any-difference-between-these-coldfusion-components
+
+               https://subscription.packtpub.com/book/web+development/9781847196323/1/ch01lvl1sec04/restricting-your-functions-to-scopes
+
+
+               <cfscript> qry eqvlent
+https://yiengly.wordpress.com/2017/08/05/quick-tip-on-using-coldfusion-cfquery-in-cfscript/
+               https://stackoverflow.com/questions/25268671/get-newly-inserted-record-id-in-cfscript
+
+               https://gist.github.com/nastanford/8776372
+
+               getResult() is equates to <cfquery name=".."> and getPrefix() to <cfquery result="...">. 
+
+               https://helpx.adobe.com/coldfusion/developing-applications/building-blocks-of-coldfusion-applications/building-and-using-coldfusion-components/cfc-variables-and-scope.html
+
+
+               function onRequestStart(required string thePage) returntype="boolean" output="false" {
+    request.appCode = "MyApp";
+    request.appName = "Single Page Application";
+    var page = listLast(arguments.thePage,"/");
+  //this is a function call and not variable declaration.   
+  onApplicationStart();
+
+    if(!listFindNoCase("Home.cfm,Auth.cfc",page)){
+        if(structKeyExists(SESSION, "loggedin") AND SESSION.loggedin EQ false){
+            location(url="https://www.myapp.org", addToken="false");
+        }
+    }
+
+    return true;
+}
+
+
+ <script src="../js/jquery-3.6.0.js"></script>
+                    <script>
+                         $(document).ready(function () {
+                                   localStorage.setItem('openModal', '#exampleModal');
+                                   console.log("validation err");
+                                   let href = "../home.cfm";
+                                    window.location.replace(href);
+                         })
+                    </script>
+
+
+
+                    <script>
+               $(document).ready(function () {
+                    localStorage.setItem('title', #variables.title#);
+                    localStorage.setItem('firstname', #variables.firstname#);
+                    localStorage.setItem('lastname', #variables.lastname#);
+                    localStorage.setItem('gender', #variables.gender#);
+                    localStorage.setItem('dob', #variables.dob#);
+                    localStorage.setItem('email', #variables.email#);
+                    localStorage.setItem('phone', #variables.phone#);
+                    localStorage.setItem('address', #variables.address#);
+                    localStorage.setItem('street', #variables.street#);
+                    localStorage.setItem('pincode', #variables.pincode#);
+
+                    
+               });
+          </script>
+
+
+
+                        
+             $("#title").val(localStorage.getItem('title')).change();
+             $("#firstname").val(localStorage.getItem('firstname'));
+             $("#lastname").val(localStorage.getItem('lastname'));
+             $("#gender").val(localStorage.getItem('gender')).change();
+             let dateStr = new Date(localStorage.getItem('dob'));
+             var now = new Date(localStorage.getItem('dob'));
+             var day = ("0" + now.getDate()).slice(-2);
+             var month = ("0" + (now.getMonth() + 1)).slice(-2);
+             var today = now.getFullYear() + "-" + (month) + "-" + (day);
+             $('#dob').val(today);
+             $("#email").val(localStorage.getItem('email'));
+             $("#phone").val(localStorage.getItem('phone'));
+             $("#address").val(localStorage.getItem('address'));
+             $("#street").val(localStorage.getItem('street'));
+             $("#pincode").val(localStorage.getItem('pincode'));

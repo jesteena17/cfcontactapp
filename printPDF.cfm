@@ -1,4 +1,5 @@
-<cfinvoke component="components.backend" method="displayalldataforreport" returnvariable="allcontacts"></cfinvoke>
+<cfset pdfObj=CreateObject("component","components.backend")/>
+<cfset allcontacts=pdfObj.displayalldataforreport()/>
 <cfdocument format="PDF" filename="Contacts.pdf" overwrite="Yes" orientation = "landscape"  > 
      <cfoutput>
           <cfdocumentsection> 

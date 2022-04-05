@@ -1,4 +1,5 @@
-<cfinvoke component="components.backend" method="displayalldataforreport" returnvariable="allcontacts"></cfinvoke>
+<cfset xelObj=CreateObject("component","components.backend")/>
+<cfset allcontacts=xelObj.displayalldataforreport()/>
 <cfspreadsheet 
         action = "write" 
         filename="Contacts.xlsx" 
